@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Be My Valentine 💘</title>
+
+<style>
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#ff758c,#ff7eb3);
+    font-family:Arial, sans-serif;
+    overflow:hidden;
+}
+
+.container{
+    text-align:center;
+    color:white;
+}
+
+h1{
+    font-size:2.5rem;
+    margin-bottom:30px;
+}
+
+.buttons{
+    position:relative;
+    width:300px;
+    height:200px;
+    margin:auto;
+}
+
+button{
+    padding:15px 35px;
+    font-size:1.2rem;
+    border:none;
+    border-radius:30px;
+    cursor:pointer;
+}
+
+#yesBtn{
+    background:#4CAF50;
+    color:white;
+}
+
+#noBtn{
+    background:#f44336;
+    color:white;
+    position:absolute;
+    left:120px;
+    top:80px;
+}
+
+/* Confetti pieces */
+.confetti{
+    position:fixed;
+    width:10px;
+    height:10px;
+    animation:fall 3s linear infinite;
+}
+
+@keyframes fall{
+    0%{transform:translateY(-10px) rotate(0deg);}
+    100%{transform:translateY(110vh) rotate(360deg);}
+}
+
+/* Mobile friendly */
+@media (max-width:600px){
+    h1{font-size:2rem;}
+    .buttons{width:260px;height:180px;}
+    button{font-size:1rem;padding:12px 28px;}
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>Will you be my Valentine? 💖</h1>
+
+    <div class="buttons">
+        <button id="yesBtn" onclick="yesClicked()">YES ❤️</button>
+        <button id="noBtn">NO 💔</button>
+    </div>
+</div>
+
+<script>
+const noBtn = document.getElementById("noBtn");
+const box = document.querySelector(".buttons");
+
+// Make NO button run inside box only
+function moveButton(){
+    const maxX = box.clientWidth - noBtn.clientWidth;
+    const maxY = box.clientHeight - noBtn.clientHeight;
+
+    const x = Math.random() * maxX;
+    const y = Math.random() * maxY;
+
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+}
+
+noBtn.addEventListener("mouseover", moveButton);
+noBtn.addEventListener("touchstart", moveButton);
+
+// Confetti animation
+function createConfetti(){
+    const colors = ["#ff0","#0f0","#0ff","#f0f","#fff","#f00","#ff69b4"];
+
+    for(let i=0;i<90;i++){
+        const conf = document.createElement("div");
+        conf.className = "confetti";
+        conf.style.left = Math.random()*100 + "vw";
+        conf.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
+        conf.style.animationDuration = (Math.random()*2 + 2) + "s";
+
+        document.body.appendChild(conf);
+
+        setTimeout(()=>conf.remove(),3000);
+    }
+}
+
+// YES click → confetti + WhatsApp
+function yesClicked(){
+    createConfetti();
+
+    setTimeout(()=>{
+        const phone = "916385771219";  // India code +91 added
+        const message = encodeURIComponent("I said YES ❤️ Happy Valentine’s Day 😘🎉");
+
+        window.location.href = `https://wa.me/${phone}?text=${message}`;
+    },1200);
+}
+</script>
+
+</body>
+</html>
