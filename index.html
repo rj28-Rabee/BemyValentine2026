@@ -62,7 +62,7 @@ transition:.2s;
 position:static;
 }
 
-/* 🎊 Confetti */
+/* Effects */
 .confetti{
 position:fixed;
 width:10px;
@@ -76,7 +76,6 @@ from{transform:translateY(0) rotate(0deg);}
 to{transform:translateY(130vh) rotate(720deg);}
 }
 
-/* 🎈 Balloons */
 .balloon{
 position:fixed;
 width:35px;
@@ -91,7 +90,6 @@ from{transform:translateY(0);}
 to{transform:translateY(-140vh);}
 }
 
-/* ❤️ Hearts */
 .heart{
 position:fixed;
 font-size:22px;
@@ -102,6 +100,13 @@ animation:heartUp linear forwards;
 @keyframes heartUp{
 from{transform:translateY(0);}
 to{transform:translateY(-140vh);}
+}
+
+/* angry gif style */
+.angryGif{
+width:250px;
+border-radius:15px;
+margin-bottom:15px;
 }
 
 @media(max-width:600px){
@@ -130,8 +135,7 @@ const yesBtn=document.getElementById("yesBtn");
 const noBtn=document.getElementById("noBtn");
 const box=document.getElementById("box");
 
-// ================= NO RUN =================
-
+// ========== NO RUN ==========
 function moveNo(){
 const maxX=box.clientWidth-noBtn.clientWidth;
 const maxY=box.clientHeight-noBtn.clientHeight;
@@ -149,9 +153,7 @@ if(d<80) moveNo();
 });
 document.addEventListener("touchmove",moveNo);
 
-
-// ================= EFFECTS =================
-
+// ========== EFFECTS ==========
 function confetti(){
 const colors=["#ff0","#0f0","#0ff","#f0f","#fff","#f00","#ff69b4"];
 for(let i=0;i<120;i++){
@@ -189,9 +191,7 @@ setTimeout(()=>h.remove(),10000);
 }
 }
 
-
-// ================= FIRST YES =================
-
+// ========== FIRST YES ==========
 yesBtn.onclick=()=>{
 confetti();
 balloons();
@@ -199,12 +199,9 @@ hearts();
 setTimeout(showTestPage,900);
 };
 
-
-// ================= UNA TEST PANNALAMA =================
-
+// ========== UNA TEST PANNALAMA ==========
 function showTestPage(){
 
-// ✅ ORIGINAL WORKING PANDA GIF (from giphy)
 body.style.background=
 "url('https://media.giphy.com/media/l0MYC0LajbaPoEADu/giphy.gif') center/cover no-repeat";
 
@@ -216,21 +213,20 @@ Una test pannalama? 😘❤️
 
 <div class="actionBtns">
 <button id="yesBtn" onclick="startNext()">YES ❤️</button>
-<button id="noBtn2" onclick="showAngry()">NO 💔</button>
+<button onclick="showAngry()">NO 💔</button>
 </div>
 `;
 }
 
-
-// ================= NO CLICK =================
-
+// ========== FIXED NO GIF ==========
 function showAngry(){
 
-// ✅ ORIGINAL WORKING ANGRY GIF (from giphy)
-body.style.background=
-"url('https://media.giphy.com/media/3o6Zt481isNVuQI1l6/giphy.gif') center/cover no-repeat";
+body.style.background="linear-gradient(135deg,#ff758c,#ff7eb3)";
 
 content.innerHTML=`
+<img class="angryGif" 
+src="https://media.giphy.com/media/3o6Zt481isNVuQI1l6/giphy.gif">
+
 <div class="message">
 Mooditu YES amuku dee 😤❤️
 </div>
@@ -239,14 +235,11 @@ Mooditu YES amuku dee 😤❤️
 `;
 }
 
-
-// ================= TEMP NEXT =================
-
+// ========== TEMP NEXT ==========
 function startNext(){
 body.style.background="linear-gradient(135deg,#ff758c,#ff7eb3)";
 content.innerHTML=`<div class="message">Next step coming 😄❤️</div>`;
 }
-
 </script>
 
 </body>
