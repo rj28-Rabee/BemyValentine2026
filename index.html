@@ -7,75 +7,66 @@
 
 <style>
 body{
-margin:0;
-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-background:linear-gradient(135deg,#ff758c,#ff7eb3);
-font-family:Arial,sans-serif;
-overflow:hidden;
-transition:1s;
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#ff758c,#ff7eb3);
+    font-family:Arial, sans-serif;
+    overflow:hidden;
+    transition:1s;
 }
 
 .container{
-text-align:center;
-color:white;
-max-width:380px;
-padding:20px;
+    text-align:center;
+    color:white;
+    max-width:360px;
+    padding:20px;
 }
 
 .message{
-font-size:1.8rem;
-margin-bottom:20px;
+    font-size:2rem;
+    margin-bottom:20px;
 }
 
 .buttons{
-position:relative;
-width:300px;
-height:200px;
-margin:auto;
+    position:relative;
+    width:300px;
+    height:200px;
+    margin:auto;
 }
 
 button{
-padding:14px 30px;
-font-size:1.1rem;
-border:none;
-border-radius:30px;
-cursor:pointer;
-margin:10px;
+    padding:14px 30px;
+    font-size:1.1rem;
+    border:none;
+    border-radius:30px;
+    cursor:pointer;
+    margin:10px;
 }
 
-#yesBtn{background:#4CAF50;color:white;}
+#yesBtn{
+    background:#4CAF50;
+    color:white;
+}
+
 #noBtn{
-background:#f44336;
-color:white;
-position:absolute;
-left:120px;
-top:90px;
-transition:.2s;
+    background:#f44336;
+    color:white;
+    position:absolute;
+    left:120px;
+    top:90px;
+    transition:0.2s;
 }
 
-.option{
-display:block;
-background:#2196F3;
-color:white;
-width:100%;
-margin:12px 0;
+.actionBtns button{
+    position:static;
 }
 
-.score{margin-top:10px;font-size:1.2rem}
-
-textarea{
-width:100%;
-height:160px;
-border-radius:15px;
-padding:10px;
-font-size:1rem;
-}
-
-.angry{
-font-size:3rem;
+/* Mobile friendly */
+@media(max-width:600px){
+    .message{font-size:1.6rem;}
 }
 </style>
 </head>
@@ -84,172 +75,100 @@ font-size:3rem;
 
 <div class="container" id="content">
 
-<div class="message">Will you be my Valentine? 💘</div>
+    <div class="message">Will you be my Valentine? 💘</div>
 
-<div class="buttons" id="box">
-<button id="yesBtn">YES ❤️</button>
-<button id="noBtn">NO 💔</button>
-</div>
+    <div class="buttons" id="box">
+        <button id="yesBtn">YES ❤️</button>
+        <button id="noBtn">NO 💔</button>
+    </div>
 
 </div>
 
 <script>
-const body=document.getElementById("body");
-const content=document.getElementById("content");
-const yesBtn=document.getElementById("yesBtn");
-const noBtn=document.getElementById("noBtn");
-const box=document.getElementById("box");
+const body = document.getElementById("body");
+const content = document.getElementById("content");
+const yesBtn = document.getElementById("yesBtn");
+const noBtn = document.getElementById("noBtn");
+const box = document.getElementById("box");
 
-let score=0;
-let q=0;
-let noSize=1;
+// ================= NO RUN AWAY (FIRST PAGE) =================
 
-// ===== NO RUN =====
 function moveNo(){
-const maxX=box.clientWidth-noBtn.clientWidth;
-const maxY=box.clientHeight-noBtn.clientHeight;
-noBtn.style.left=Math.random()*maxX+"px";
-noBtn.style.top=Math.random()*maxY+"px";
+    const maxX = box.clientWidth - noBtn.clientWidth;
+    const maxY = box.clientHeight - noBtn.clientHeight;
+
+    noBtn.style.left = Math.random() * maxX + "px";
+    noBtn.style.top = Math.random() * maxY + "px";
 }
 
-document.addEventListener("mousemove",e=>{
-const r=noBtn.getBoundingClientRect();
-const d=Math.hypot(
-e.clientX-(r.left+r.width/2),
-e.clientY-(r.top+r.height/2)
-);
-if(d<80) moveNo();
-});
-document.addEventListener("touchmove",moveNo);
-
-// ===== YES FIRST =====
-yesBtn.onclick=()=>{
-body.style.background="url('https://media.giphy.com/media/l0MYC0LajbaPoEADu/giphy.gif') center/cover no-repeat";
-
-content.innerHTML=`
-<div class="message">
-I know you’re my Valentine dee vennamavalee 💕🥰<br><br>
-Una test pannalama? 😘❤️
-</div>
-<button id="yesBtn" onclick="nextQ()">YES ❤️</button>
-`;
-};
-
-// ===== QUESTIONS =====
-function nextQ(){
-q++;
-body.style.background="linear-gradient(135deg,#ff758c,#ff7eb3)";
-
-if(q===1){
-showQ("Who I like the most?",
-["Priya","Chicky"],0);
-}
-
-if(q===2){
-showQ("1st pic together?",
-["9th June 2024","9th June 2023","9th Sep 2023","9th Dec 2023"],2);
-}
-
-if(q===3){
-showQ("1st kiss on forehead?",
-["15th June 2024","9th June 2024","2nd June 2024","3rd June 2023"],0);
-}
-
-if(q===4){
-marriage();
-}
-
-if(q===5){
-loveInput();
-}
-
-if(q===6){
-finish();
-}
-}
-
-function showQ(text,opts,correct){
-content.innerHTML=`<div class="message">${text}</div>`;
-
-opts.forEach((o,i)=>{
-let b=document.createElement("button");
-b.className="option";
-b.innerHTML=o;
-b.onclick=()=> i===correct ? correctAns() : wrong(()=>showQ(text,opts,correct));
-content.appendChild(b);
+document.addEventListener("mousemove", e=>{
+    const r = noBtn.getBoundingClientRect();
+    const d = Math.hypot(
+        e.clientX - (r.left + r.width/2),
+        e.clientY - (r.top + r.height/2)
+    );
+    if(d < 80) moveNo();
 });
 
-content.innerHTML+=`<div class="score">Score: ${score}</div>`;
+document.addEventListener("touchmove", moveNo);
+
+
+// ================= FIRST YES =================
+
+yesBtn.onclick = showTestPage;
+
+
+// ================= UNA TEST PANNALAMA PAGE =================
+
+function showTestPage(){
+
+    body.style.background = 
+    "url('https://media.giphy.com/media/l0MYC0LajbaPoEADu/giphy.gif') center/cover no-repeat";
+
+    content.innerHTML = `
+        <div class="message">
+            I know you’re my Valentine dee vennamavalee 💕🥰<br><br>
+            Una test pannalama? 😘❤️
+        </div>
+
+        <div class="actionBtns">
+            <button id="yesBtn" onclick="startQuiz()">YES ❤️</button>
+            <button id="noBtn2" onclick="showAngry()">NO 💔</button>
+        </div>
+    `;
 }
 
-function correctAns(){
-score++;
-nextQ();
+
+// ================= IF NO CLICKED =================
+
+function showAngry(){
+
+    body.style.background =
+    "url('https://media.giphy.com/media/3o6Zt481isNVuQI1l6/giphy.gif') center/cover no-repeat";
+
+    content.innerHTML = `
+        <div class="message">
+            Mooditu YES amuku dee 😤❤️
+        </div>
+
+        <button id="yesBtn" onclick="showTestPage()">⬅ Back</button>
+    `;
 }
 
-function wrong(retry){
-content.innerHTML=`<div class="angry">😡</div><div class="message">Wrong!</div>`;
-setTimeout(retry,1200);
+
+// ================= TEMP NEXT STEP =================
+
+function startQuiz(){
+
+    body.style.background = "linear-gradient(135deg,#ff758c,#ff7eb3)";
+
+    content.innerHTML = `
+        <div class="message">
+            Next step will be Question 1 😄❤️
+        </div>
+    `;
 }
 
-// ===== MARRIAGE =====
-function marriage(){
-noSize=1;
-content.innerHTML=`
-<div class="message">Will you marry me? 💍</div>
-<button id="yesBtn" onclick="score++;nextQ()">YES ❤️</button>
-<button id="noBtn" onclick="marryNo()">NO 💔</button>
-<div class="score">Score: ${score}</div>
-`;
-}
-
-function marryNo(){
-let n=document.getElementById("noBtn");
-noSize*=0.7;
-n.style.transform=`scale(${noSize})`;
-
-if(noSize>0.5) content.querySelector(".message").innerHTML="Are you sure?? 😒";
-else if(noSize>0.3) content.querySelector(".message").innerHTML="Unaku ena vita evanum kedaika matan 😤";
-else if(noSize>0.15) content.querySelector(".message").innerHTML="Mooditu YES amuku dee 😡";
-else{
-content.innerHTML=`<div class="message">Yes we can get married in 2026 💍😍</div>`;
-setTimeout(nextQ,1500);
-}
-}
-
-// ===== LOVE INPUT =====
-function loveInput(){
-content.innerHTML=`
-<div class="message">One sentence to tell me ❤️</div>
-<textarea id="loveText"></textarea>
-<button id="yesBtn" onclick="checkLove()">Submit 💖</button>
-<div class="score">Score: ${score}</div>
-`;
-}
-
-function checkLove(){
-let t=document.getElementById("loveText").value.toLowerCase();
-
-if(t.includes("love")){
-score++;
-nextQ();
-}else{
-wrong(loveInput);
-}
-}
-
-// ===== FINAL =====
-function finish(){
-body.style.background="url('https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif') center/cover no-repeat";
-
-content.innerHTML=`
-<div class="message">
-Congrats Rani mavale 💖🐻<br>
-You passed 😘<br><br>
-Final Score: ${score}/5
-</div>
-`;
-}
 </script>
 
 </body>
