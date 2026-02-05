@@ -29,8 +29,8 @@ h1{
 
 .buttons{
     position:relative;
-    width:300px;
-    height:200px;
+    width:320px;
+    height:220px;
     margin:auto;
 }
 
@@ -40,6 +40,7 @@ button{
     border:none;
     border-radius:30px;
     cursor:pointer;
+    transition: transform 0.2s ease;
 }
 
 #yesBtn{
@@ -52,26 +53,34 @@ button{
     color:white;
     position:absolute;
     left:120px;
-    top:80px;
+    top:90px;
+    transition: left 0.25s ease, top 0.25s ease;
 }
 
-/* Confetti pieces */
+/* CONFETTI */
 .confetti{
     position:fixed;
-    width:10px;
-    height:10px;
-    animation:fall 3s linear infinite;
+    width:12px;
+    height:12px;
+    pointer-events:none;
+    animation:fall linear forwards;
 }
 
 @keyframes fall{
-    0%{transform:translateY(-10px) rotate(0deg);}
-    100%{transform:translateY(110vh) rotate(360deg);}
+    from{
+        transform:translateY(-20px) rotate(0deg);
+        opacity:1;
+    }
+    to{
+        transform:translateY(110vh) rotate(720deg);
+        opacity:0;
+    }
 }
 
-/* Mobile friendly */
+/* Mobile */
 @media (max-width:600px){
     h1{font-size:2rem;}
-    .buttons{width:260px;height:180px;}
+    .buttons{width:280px;height:190px;}
     button{font-size:1rem;padding:12px 28px;}
 }
 </style>
@@ -79,11 +88,11 @@ button{
 
 <body>
 
-<div class="container">
+<div class="container" id="mainContent">
     <h1>Will you be my Valentine? 💖</h1>
 
     <div class="buttons">
-        <button id="yesBtn" onclick="yesClicked()">YES ❤️</button>
+        <button id="yesBtn">YES ❤️</button>
         <button id="noBtn">NO 💔</button>
     </div>
 </div>
@@ -91,8 +100,9 @@ button{
 <script>
 const noBtn = document.getElementById("noBtn");
 const box = document.querySelector(".buttons");
+const yesBtn = document.getElementById("yesBtn");
 
-// Make NO button run inside box only
+// Smooth NO movement inside box
 function moveButton(){
     const maxX = box.clientWidth - noBtn.clientWidth;
     const maxY = box.clientHeight - noBtn.clientHeight;
@@ -107,36 +117,44 @@ function moveButton(){
 noBtn.addEventListener("mouseover", moveButton);
 noBtn.addEventListener("touchstart", moveButton);
 
-// Confetti animation
-function createConfetti(){
-    const colors = ["#ff0","#0f0","#0ff","#f0f","#fff","#f00","#ff69b4"];
+// Big Happy Confetti Explosion
+function launchConfetti(){
+    const colors = ["#ff0","#0f0","#0ff","#f0f","#fff","#f00","#ff69b4","#00f"];
 
-    for(let i=0;i<90;i++){
+    for(let i=0;i<180;i++){
         const conf = document.createElement("div");
         conf.className = "confetti";
-        conf.style.left = Math.random()*100 + "vw";
+
+        conf.style.left = Math.random() * 100 + "vw";
         conf.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
-        conf.style.animationDuration = (Math.random()*2 + 2) + "s";
+
+        const size = Math.random() * 8 + 6;
+        conf.style.width = size + "px";
+        conf.style.height = size + "px";
+
+        const duration = Math.random() * 2 + 2;
+        conf.style.animationDuration = duration + "s";
 
         document.body.appendChild(conf);
 
-        setTimeout(()=>conf.remove(),3000);
+        setTimeout(()=>conf.remove(), duration * 1000);
     }
 }
 
-// YES click → confetti + WhatsApp
-function yesClicked(){
-    createConfetti();
+// YES CLICK EVENT
+yesBtn.addEventListener("click", () => {
 
-    setTimeout(()=>{
-        const phone = "916385771219";  // India code +91 added
-        const message = encodeURIComponent("I said YES ❤️ Happy Valentine’s Day 😘🎉");
+    // change text to happy message
+    document.getElementById("mainContent").innerHTML = `
+        <h1>YAYYY!!! 💕🎉</h1>
+        <h1>I’m so happy 😍💖</h1>
+    `;
 
-        window.location.href = `https://wa.me/${phone}?text=${message}`;
-    },1200);
-}
+    // continuous celebration bursts
+    launchConfetti();
+    setInterval(launchConfetti, 1200);
+});
 </script>
 
 </body>
-</html> 
-
+</html>
