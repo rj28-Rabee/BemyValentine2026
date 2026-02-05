@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,109 +7,65 @@
 
 <style>
 body{
-margin:0;
-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-background:linear-gradient(135deg,#ff758c,#ff7eb3);
-font-family:Arial;
-overflow:hidden;
-transition:.8s;
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#ff758c,#ff7eb3);
+    font-family:Arial, sans-serif;
+    overflow:hidden;
+    transition:background 1s ease;
 }
 
 .container{
-text-align:center;
-color:white;
-max-width:360px;
-padding:20px;
-z-index:5;
+    text-align:center;
+    color:white;
 }
 
 .message{
-font-size:2rem;
-margin-bottom:20px;
+    font-size:2rem;
+    line-height:1.4;
 }
 
-.buttons{
-position:relative;
-width:300px;
-height:200px;
-margin:auto;
+.buttonsBox{
+    position:relative;
+    width:320px;
+    height:220px;
+    margin:auto;
 }
 
 button{
-padding:14px 30px;
-font-size:1.1rem;
-border:none;
-border-radius:30px;
-cursor:pointer;
-margin:10px;
+    padding:14px 32px;
+    font-size:1.1rem;
+    border:none;
+    border-radius:30px;
+    cursor:pointer;
+    margin:10px;
 }
 
-#yesBtn{
-background:#4CAF50;
-color:white;
+.mainYes{background:#4CAF50;color:white;}
+.mainNo{
+    background:#f44336;color:white;
+    position:absolute;left:120px;top:90px;
+    transition:0.2s;
 }
 
-#noBtn{
-background:#f44336;
-color:white;
-position:absolute;
-left:120px;
-top:90px;
-transition:.15s;
+.optionBtn{
+    background:#2196F3;
+    color:white;
+    display:block;
+    margin:15px auto;
+    width:240px;
 }
 
-.actionBtns button{
-position:static;
-}
-
-/* Effects */
-.confetti{
-position:fixed;
-width:10px;
-height:10px;
-top:-20px;
-animation:fall linear forwards;
-}
-
-@keyframes fall{
-to{transform:translateY(130vh) rotate(720deg);}
-}
-
-.balloon{
-position:fixed;
-width:35px;
-height:45px;
-border-radius:50%;
-bottom:-80px;
-animation:up linear forwards;
-}
-
-@keyframes up{
-to{transform:translateY(-140vh);}
-}
-
-.heart{
-position:fixed;
-font-size:22px;
-bottom:-60px;
-animation:heartUp linear forwards;
-}
-
-@keyframes heartUp{
-to{transform:translateY(-140vh);}
-}
-
-.angryGif{
-width:260px;
-border-radius:15px;
-margin-bottom:15px;
+.score{
+    margin-top:15px;
+    font-size:1.3rem;
 }
 
 @media(max-width:600px){
-.message{font-size:1.6rem;}
+    .message{font-size:1.5rem;}
 }
 </style>
 </head>
@@ -120,122 +76,127 @@ margin-bottom:15px;
 
 <div class="message">Will you be my Valentine? 💘</div>
 
-<div class="buttons" id="box">
-<button id="yesBtn">YES ❤️</button>
-<button id="noBtn">NO 💔</button>
+<div class="buttonsBox">
+<button class="mainYes" id="yesBtn">YES ❤️</button>
+<button class="mainNo" id="noBtn">NO 💔</button>
 </div>
 
 </div>
 
 <script>
-const body=document.getElementById("body");
-const content=document.getElementById("content");
-const yesBtn=document.getElementById("yesBtn");
-const noBtn=document.getElementById("noBtn");
-const box=document.getElementById("box");
+const content = document.getElementById("content");
+const body = document.getElementById("body");
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+const box = document.querySelector(".buttonsBox");
 
-// ===== NO RUN =====
-function moveNo(){
-const maxX=box.clientWidth-noBtn.clientWidth;
-const maxY=box.clientHeight-noBtn.clientHeight;
-noBtn.style.left=Math.random()*maxX+"px";
-noBtn.style.top=Math.random()*maxY+"px";
+let score = 0;
+let qIndex = 0;
+
+// Dodge NO
+function dodge(){
+  const maxX = box.clientWidth - noBtn.clientWidth;
+  const maxY = box.clientHeight - noBtn.clientHeight;
+  noBtn.style.left = Math.random()*maxX+"px";
+  noBtn.style.top = Math.random()*maxY+"px";
 }
-
-document.addEventListener("mousemove",e=>{
-const r=noBtn.getBoundingClientRect();
-const d=Math.hypot(
-e.clientX-(r.left+r.width/2),
-e.clientY-(r.top+r.height/2)
-);
-if(d<80) moveNo();
+document.addEventListener("mousemove", e=>{
+  const r=noBtn.getBoundingClientRect();
+  const d=Math.hypot(
+    e.clientX-(r.left+r.width/2),
+    e.clientY-(r.top+r.height/2)
+  );
+  if(d<80) dodge();
 });
-document.addEventListener("touchmove",moveNo);
+document.addEventListener("touchmove", dodge);
 
-// ===== EFFECTS =====
-function confetti(){
-const colors=["#ff0","#0f0","#0ff","#f0f","#fff","#f00","#ff69b4"];
-for(let i=0;i<120;i++){
-let c=document.createElement("div");
-c.className="confetti";
-c.style.left=Math.random()*100+"vw";
-c.style.backgroundColor=colors[Math.floor(Math.random()*colors.length)];
-c.style.animationDuration=(Math.random()*2+3)+"s";
-document.body.appendChild(c);
-setTimeout(()=>c.remove(),6000);
-}
-}
+// First YES
+yesBtn.onclick = showTestPage;
 
-function balloons(){
-for(let i=0;i<18;i++){
-let b=document.createElement("div");
-b.className="balloon";
-b.style.left=Math.random()*100+"vw";
-b.style.backgroundColor=["red","pink","yellow","blue","purple"][Math.floor(Math.random()*5)];
-b.style.animationDuration=(Math.random()*5+6)+"s";
-document.body.appendChild(b);
-setTimeout(()=>b.remove(),10000);
-}
-}
-
-function hearts(){
-for(let i=0;i<30;i++){
-let h=document.createElement("div");
-h.className="heart";
-h.innerHTML="❤️";
-h.style.left=Math.random()*100+"vw";
-h.style.animationDuration=(Math.random()*4+6)+"s";
-document.body.appendChild(h);
-setTimeout(()=>h.remove(),10000);
-}
-}
-
-// ===== FIRST YES =====
-yesBtn.onclick=()=>{
-confetti();
-balloons();
-hearts();
-setTimeout(showTestPage,900);
-};
-
-// ===== UNA TEST PANNALAMA =====
 function showTestPage(){
-
-body.style.background="url('panda.gif') center/cover no-repeat";
-
-content.innerHTML=`
-<div class="message">
-I know you’re my Valentine dee vennamavalee 💕🥰<br><br>
-Una test pannalama? 😘❤️
-</div>
-
-<div class="actionBtns">
-<button id="yesBtn" onclick="startNext()">YES ❤️</button>
-<button onclick="showAngry()">NO 💔</button>
-</div>
-`;
+  body.style.background="url('https://media.giphy.com/media/l0MYC0LajbaPoEADu/giphy.gif') center/cover no-repeat";
+  content.innerHTML=`
+  <div class="message">
+  I know you’re my Valentine dee vennamavalee 💕🥰<br><br>
+  Una test pannalama? 😘❤️
+  </div>
+  <button class="mainYes" onclick="startQuiz()">YES ❤️</button>
+  <button class="mainNo" style="position:static" onclick="angryPage()">NO 💔</button>
+  `;
 }
 
-// ===== NO CLICK (ANGRY) =====
-function showAngry(){
-
-body.style.background="linear-gradient(135deg,#ff758c,#ff7eb3)";
-
-content.innerHTML=`
-<img class="angryGif" src="angry.gif">
-
-<div class="message">
-Mooditu YES amuku dee 😤❤️
-</div>
-
-<button id="yesBtn" onclick="showTestPage()">⬅ Back</button>
-`;
+function angryPage(){
+ body.style.background="url('https://media.giphy.com/media/11tTNkNy1SdXGg/giphy.gif') center/cover no-repeat";
+ content.innerHTML=`
+ <div class="message">Mooditu YES amuku dee 😤❤️</div>
+ <button class="mainYes" onclick="showTestPage()">⬅ Back</button>
+ `;
 }
 
-// ===== TEMP NEXT =====
-function startNext(){
-body.style.background="linear-gradient(135deg,#ff758c,#ff7eb3)";
-content.innerHTML="<div class='message'>Next step coming 😄❤️</div>";
+// QUESTIONS
+const questions = [
+ {q:"Who I like the most?", a:"Priya", b:"Chicky", correct:"A"},
+ {q:"Who is my cute girl?", a:"Priya", b:"Friend", correct:"A"},
+ {q:"Who owns my heart?", a:"Priya", b:"Nobody", correct:"A"},
+ {q:"Who is my future?", a:"Priya", b:"Dream", correct:"A"},
+ {q:"Who is my Valentine forever?", a:"Priya", b:"Someone else", correct:"A"}
+];
+
+function startQuiz(){
+ qIndex=0;
+ score=0;
+ showQuestion();
+}
+
+function showQuestion(){
+ body.style.background="linear-gradient(135deg,#ff758c,#ff7eb3)";
+ let q=questions[qIndex];
+ content.innerHTML=`
+ <div class="message">Question ${qIndex+1} ❤️<br>${q.q}</div>
+
+ <button class="optionBtn" onclick="answer('A')">A) ${q.a}</button>
+ <button class="optionBtn" onclick="answer('B')">B) ${q.b}</button>
+
+ <div class="score">Score: ${score}</div>
+ `;
+}
+
+function answer(choice){
+ if(choice===questions[qIndex].correct){
+   score++;
+   nextStep(true);
+ }else{
+   nextStep(false);
+ }
+}
+
+function nextStep(correct){
+ if(!correct){
+   body.style.background="url('https://media.giphy.com/media/3o6Zt481isNVuQI1l6/giphy.gif') center/cover no-repeat";
+   content.innerHTML=`<div class="message">Wrong 😡👊</div>`;
+ }
+
+ setTimeout(()=>{
+   qIndex++;
+   if(qIndex<5){
+     showQuestion();
+   }else{
+     finishQuiz();
+   }
+ },2000);
+}
+
+// Final Screen
+function finishQuiz(){
+ body.style.background="url('https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif') center/cover no-repeat";
+
+ content.innerHTML=`
+ <div class="message">
+ 🎉 Congrats Rani mavale 💖<br>
+ You passed 😘🐻
+ </div>
+ <div class="score">Final Score: ${score}/5</div>
+ `;
 }
 </script>
 
