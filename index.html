@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,213 +7,194 @@
 
 <style>
 body{
-margin:0;
-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
+margin:0;height:100vh;display:flex;justify-content:center;align-items:center;
 background:linear-gradient(135deg,#ff758c,#ff7eb3);
-font-family:Arial, sans-serif;
-overflow:hidden;
-transition:background 1s ease;
+font-family:Arial;overflow:hidden;color:white
 }
 
-.container{text-align:center;color:white;}
-.message{font-size:2rem;line-height:1.4;}
-
-.buttons{position:relative;width:320px;height:220px;margin:auto;}
-.actionBtns{margin-top:25px;}
+.container{text-align:center}
+.message{font-size:2rem}
 
 button{
-padding:14px 32px;
-font-size:1.1rem;
-border:none;
-border-radius:30px;
-cursor:pointer;
-margin:10px;
+padding:14px 30px;border:none;border-radius:30px;
+font-size:1.1rem;margin:10px;cursor:pointer
 }
 
-#yesBtn{background:#4CAF50;color:white;}
-#noBtn{background:#f44336;color:white;position:absolute;left:120px;top:90px;}
+.yes{background:#4CAF50;color:white}
+.no{background:#f44336;color:white}
+.opt{background:#2196F3;color:white;width:260px;display:block;margin:12px auto}
 
-.yesSmall{background:#4CAF50;color:white;}
-.noSmall{background:#f44336;color:white;}
+.score{margin-top:15px}
 
-.optionBtn{
-background:#2196F3;
-color:white;
-display:block;
-width:270px;
-margin:12px auto;
-}
+/* effects */
+.confetti{position:fixed;width:10px;height:10px;top:-20px;animation:fall 4s linear}
+@keyframes fall{to{transform:translateY(130vh) rotate(720deg)}}
 
-.score{margin-top:15px;font-size:1.3rem}
-.navBtns{margin-top:20px}
+.heart{position:fixed;font-size:22px;bottom:-40px;animation:heartUp 8s linear}
+@keyframes heartUp{to{transform:translateY(-140vh)}}
+
+.balloon{position:fixed;width:35px;height:45px;border-radius:50%;bottom:-60px;animation:balloonUp 9s linear}
+@keyframes balloonUp{to{transform:translateY(-140vh)}}
 </style>
 </head>
 
-<body id="body">
+<body>
 
 <div class="container" id="content">
 
 <h1>Will you be my Valentine? 💘</h1>
-
-<div class="buttons">
-<button id="yesBtn">YES ❤️</button>
-<button id="noBtn">NO 💔</button>
-</div>
+<button class="yes" onclick="start()">YES ❤️</button>
+<button class="no" onmouseover="moveNo(this)">NO 💔</button>
 
 </div>
 
 <script>
-const noBtn=document.getElementById("noBtn");
-const box=document.querySelector(".buttons");
-const yesBtn=document.getElementById("yesBtn");
-const body=document.getElementById("body");
-const content=document.getElementById("content");
 
 let score=0;
+let noCount=0;
+let noScale=1;
 
-/* dodge NO */
-function dodge(){
-noBtn.style.left=Math.random()*(box.clientWidth-noBtn.clientWidth)+"px";
-noBtn.style.top=Math.random()*(box.clientHeight-noBtn.clientHeight)+"px";
+function moveNo(btn){
+btn.style.position="absolute";
+btn.style.left=Math.random()*80+"vw";
+btn.style.top=Math.random()*80+"vh";
 }
-document.addEventListener("mousemove",e=>{
-const r=noBtn.getBoundingClientRect();
-if(Math.hypot(e.clientX-(r.left+r.width/2),e.clientY-(r.top+r.height/2))<80) dodge();
-});
 
-/* first yes */
-yesBtn.onclick=()=>{
-body.style.background="url('https://media.giphy.com/media/l0MYC0LajbaPoEADu/giphy.gif') center/cover no-repeat";
+/* 🎉 celebration */
+function celebrate(){
+for(let i=0;i<120;i++){
+let c=document.createElement("div");
+c.className="confetti";
+c.style.left=Math.random()*100+"vw";
+c.style.background=["#ff0","#0ff","#f0f","#0f0","#fff","#f00"][Math.random()*6|0];
+document.body.appendChild(c);
+setTimeout(()=>c.remove(),4000)
+}
+
+for(let i=0;i<30;i++){
+let h=document.createElement("div");
+h.className="heart";
+h.innerHTML="❤️";
+h.style.left=Math.random()*100+"vw";
+document.body.appendChild(h);
+setTimeout(()=>h.remove(),9000)
+}
+
+for(let i=0;i<18;i++){
+let b=document.createElement("div");
+b.className="balloon";
+b.style.left=Math.random()*100+"vw";
+b.style.background=["red","pink","yellow","blue","purple"][Math.random()*5|0];
+document.body.appendChild(b);
+setTimeout(()=>b.remove(),9000)
+}
+}
+
+/* START */
+function start(){
+celebrate();
 content.innerHTML=`
 <div class="message">
-I know you’re my Valentine dee 💕🥰<br><br>
-Una test pannalama? 😘❤️
+I know you’re my Valentine 💕<br>Una test pannalama?
 </div>
-<div class="actionBtns">
-<button class="yesSmall" onclick="showQ1()">YES ❤️</button>
-<button class="noSmall" onclick="angry()">NO 💔</button>
-</div>`;
-};
+<button class="yes" onclick="q1()">YES</button>
+<button class="no" onclick="angry()">NO</button>`;
+}
 
 function angry(){
-body.style.background="url('https://media.giphy.com/media/11tTNkNy1SdXGg/giphy.gif') center/cover no-repeat";
-content.innerHTML=`<div class="message">Mooditu YES amuku dee 😤❤️</div>
-<button class="yesSmall" onclick="yesBtn.onclick()">⬅ Back</button>`;
+content.innerHTML=`<div class="message">Mooditu YES amuku 😤</div>
+<button class="yes" onclick="start()">Back</button>`;
 }
 
 /* Q1 */
-function showQ1(){
-body.style.background="linear-gradient(135deg,#ff758c,#ff7eb3)";
+function q1(){
 content.innerHTML=`
-<div class="message">Question 1 ❤️<br>Who I like the most?</div>
-<button class="optionBtn" onclick="correct(showQ2)">A) Priya</button>
-<button class="optionBtn" onclick="wrong(showQ1)">B) Chicky</button>
+<div class="message">Q1: Who I like most?</div>
+<button class="opt" onclick="correct(q2)">Priya</button>
+<button class="opt" onclick="wrong('https://media.giphy.com/media/3o7aD2saalBwwftBIY/giphy.gif',q1)">Chicky</button>
 <div class="score">Score: ${score}</div>`;
 }
 
 /* Q2 */
-function showQ2(){
-body.style.background="linear-gradient(135deg,#ff758c,#ff7eb3)";
+function q2(){
 content.innerHTML=`
-<div class="message">Question 2 ❤️<br>1st pic together??</div>
-<button class="optionBtn" onclick="wrong(showQ2)">A) 9th June 2024</button>
-<button class="optionBtn" onclick="wrong(showQ2)">B) 9th June 2023</button>
-<button class="optionBtn" onclick="correct(showQ3)">C) 9th Sep 2023</button>
-<button class="optionBtn" onclick="wrong(showQ2)">D) 9th Dec 2023</button>
-<div class="score">Score: ${score}</div>
-<button class="noSmall" onclick="showQ1()">⬅ Previous</button>`;
+<div class="message">Q2: 1st pic together?</div>
+<button class="opt" onclick="wrong('https://media.giphy.com/media/l1J9u3TZfpmeDLkD6/giphy.gif',q2)">9 Jun 2024</button>
+<button class="opt" onclick="wrong('https://media.giphy.com/media/26ufdipQqU2lhNA4g/giphy.gif',q2)">9 Jun 2023</button>
+<button class="opt" onclick="correct(q3)">9 Sep 2023</button>
+<button class="opt" onclick="wrong('https://media.giphy.com/media/3o6ZtaO9BZHcOjmErm/giphy.gif',q2)">9 Dec 2023</button>
+<div class="score">Score: ${score}</div>`;
 }
 
 /* Q3 */
-function showQ3(){
-body.style.background="linear-gradient(135deg,#ff758c,#ff7eb3)";
+function q3(){
 content.innerHTML=`
-<div class="message">Question 3 ❤️<br>1st Kiss on forehead??</div>
-<button class="optionBtn" onclick="correct(showQ4)">A) 15th June 2024</button>
-<button class="optionBtn" onclick="wrong(showQ3)">B) 9th June 2024</button>
-<button class="optionBtn" onclick="wrong(showQ3)">C) 2nd June 2024</button>
-<button class="optionBtn" onclick="wrong(showQ3)">D) 3rd June 2023</button>
-<div class="score">Score: ${score}</div>
-<button class="noSmall" onclick="showQ2()">⬅ Previous</button>`;
+<div class="message">Q3: 1st kiss on forehead?</div>
+<button class="opt" onclick="correct(q4)">15 Jun 2024</button>
+<button class="opt" onclick="wrong('https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif',q3)">9 Jun 2024</button>
+<button class="opt" onclick="wrong('https://media.giphy.com/media/26ufdipQqU2lhNA4g/giphy.gif',q3)">2 Jun 2024</button>
+<button class="opt" onclick="wrong('https://media.giphy.com/media/3o6ZtaO9BZHcOjmErm/giphy.gif',q3)">3 Jun 2023</button>
+<div class="score">Score: ${score}</div>`;
 }
 
-/* Q4 FIXED */
-let noClicks=0;
-let noScale=1;
-
-function showQ4(){
-noClicks=0;
-noScale=1;
-
-body.style.background="linear-gradient(135deg,#ff758c,#ff7eb3)";
-
+/* Q4 */
+function q4(){
+noCount=0;noScale=1;
 content.innerHTML=`
-<div class="message">Question 4 ❤️<br>Will you marry me? 💍</div>
-
-<div id="q4msg" class="message"></div>
-
-<button class="yesSmall" onclick="q4Yes()">YES ❤️</button>
-<button id="noBtnQ4" class="noSmall" onclick="q4No()">NO 💔</button>
-
-<div class="navBtns">
-<button class="noSmall" onclick="showQ3()">⬅ Previous</button>
-</div>`;
+<div class="message">Q4: Will you marry me? 💍</div>
+<div id="msg"></div>
+<button class="yes" onclick="marryYes()">YES</button>
+<button class="no" id="nbtn" onclick="marryNo()">NO</button>
+<div class="score">Score: ${score}</div>`;
 }
 
-function q4Yes(){
+function marryYes(){
 score++;
-body.style.background="url('https://media.giphy.com/media/3ohs4BSacFKI7A717y/giphy.gif') center/cover no-repeat";
-content.innerHTML=`
-<div class="message">Just Married in 2026 💍❤️</div>
-<div class="score">Score: ${score}</div>
-<button class="yesSmall">Next ➡</button>`;
+finalMarried();
 }
 
-function q4No(){
-const b=document.getElementById("noBtnQ4");
-const msg=document.getElementById("q4msg");
-
+function marryNo(){
+let btn=document.getElementById("nbtn");
+let msg=document.getElementById("msg");
 noScale*=0.7;
-b.style.transform=`scale(${noScale})`;
-noClicks++;
+btn.style.transform=`scale(${noScale})`;
+noCount++;
 
-const texts=[
-"Are you sure?? 😒",
-"Are you sure unaku ena vita vera evanum kedaika matan 😤",
-"Soldra pecha kelu dee venna mavalee 😡 Mooditu YES amuku",
-"Athana sona pecha keta thana ne rani mavale 😏❤️"
+let texts=[
+"Are you sure??",
+"Unaku ena vita vera evanum kedaika matan 😤",
+"Mooditu YES amuku 😡",
+"Athana sona pecha keta thana 😏"
 ];
 
-if(noClicks<=4){
-msg.innerHTML=texts[noClicks-1];
+if(noCount<=4) msg.innerHTML=texts[noCount-1];
+else finalMarried();
 }
-else{
-body.style.background="url('https://media.giphy.com/media/3ohs4BSacFKI7A717y/giphy.gif') center/cover no-repeat";
+
+/* FINAL */
+function finalMarried(){
 content.innerHTML=`
-<div class="message">Yes we can get married in 2026 💍❤️</div>
-<button class="yesSmall">Next ➡</button>`;
-}
+<div class="message" style="color:black;font-weight:bold">
+Yes we can get married in 2026 💍❤️
+</div>
+<img src="https://media.giphy.com/media/3ohs4BSacFKI7A717y/giphy.gif" width="260">
+<button class="yes">Next ➡</button>`;
 }
 
 /* helpers */
 function correct(next){
 score++;
-body.style.background="url('https://media.giphy.com/media/111ebonMs90YLu/giphy.gif') center/cover no-repeat";
 content.innerHTML=`
-<div class="message">Great 😍🎉</div>
+<div class="message">Correct 😍</div>
 <div class="score">Score: ${score}</div>
-<button class="yesSmall" onclick="${next.name}()">Next ➡</button>`;
+<button class="yes" onclick="${next.name}()">Next</button>`;
 }
 
-function wrong(back){
-body.style.background="url('https://media.giphy.com/media/11tTNkNy1SdXGg/giphy.gif') center/cover no-repeat";
-content.innerHTML=`<div class="message">Wrong 😡 Try again!</div>`;
+function wrong(gif,back){
+content.innerHTML=`<img src="${gif}" width="260"><div>Wrong 😡</div>`;
 setTimeout(back,2000);
 }
-</script>
 
+</script>
 </body>
 </html>
