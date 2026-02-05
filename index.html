@@ -68,11 +68,12 @@ position:fixed;
 width:10px;
 height:10px;
 animation:fall linear forwards;
+top:-20px;
 }
 
 @keyframes fall{
-from{transform:translateY(-20px) rotate(0deg);}
-to{transform:translateY(110vh) rotate(720deg);}
+from{transform:translateY(0) rotate(0deg);}
+to{transform:translateY(120vh) rotate(720deg);}
 }
 
 /* 🎈 Balloons */
@@ -81,27 +82,28 @@ position:fixed;
 width:35px;
 height:45px;
 border-radius:50%;
+bottom:-60px;
 animation:up linear forwards;
 }
 
 @keyframes up{
-from{transform:translateY(110vh);}
-to{transform:translateY(-120px);}
+from{transform:translateY(0);}
+to{transform:translateY(-130vh);}
 }
 
 /* ❤️ Hearts */
 .heart{
 position:fixed;
 font-size:22px;
+bottom:-40px;
 animation:heartUp linear forwards;
 }
 
 @keyframes heartUp{
-from{transform:translateY(100vh);}
-to{transform:translateY(-100px);}
+from{transform:translateY(0);}
+to{transform:translateY(-130vh);}
 }
 
-/* Mobile */
 @media(max-width:600px){
 .message{font-size:1.6rem;}
 }
@@ -128,7 +130,9 @@ const yesBtn=document.getElementById("yesBtn");
 const noBtn=document.getElementById("noBtn");
 const box=document.getElementById("box");
 
+
 // ================= NO RUN =================
+
 function moveNo(){
 const maxX=box.clientWidth-noBtn.clientWidth;
 const maxY=box.clientHeight-noBtn.clientHeight;
@@ -146,44 +150,46 @@ if(d<80) moveNo();
 });
 document.addEventListener("touchmove",moveNo);
 
+
 // ================= EFFECTS =================
 
 function confetti(){
 const colors=["#ff0","#0f0","#0ff","#f0f","#fff","#f00","#ff69b4"];
-for(let i=0;i<100;i++){
+for(let i=0;i<120;i++){
 let c=document.createElement("div");
 c.className="confetti";
 c.style.left=Math.random()*100+"vw";
 c.style.backgroundColor=colors[Math.floor(Math.random()*colors.length)];
 c.style.animationDuration=(Math.random()*2+2)+"s";
 document.body.appendChild(c);
-setTimeout(()=>c.remove(),4000);
+setTimeout(()=>c.remove(),5000);
 }
 }
 
 function balloons(){
-for(let i=0;i<15;i++){
+for(let i=0;i<18;i++){
 let b=document.createElement("div");
 b.className="balloon";
 b.style.left=Math.random()*100+"vw";
 b.style.backgroundColor=["red","pink","yellow","blue","purple"][Math.floor(Math.random()*5)];
-b.style.animationDuration=(Math.random()*4+5)+"s";
+b.style.animationDuration=(Math.random()*4+6)+"s";
 document.body.appendChild(b);
-setTimeout(()=>b.remove(),8000);
+setTimeout(()=>b.remove(),9000);
 }
 }
 
 function hearts(){
-for(let i=0;i<25;i++){
+for(let i=0;i<30;i++){
 let h=document.createElement("div");
 h.className="heart";
 h.innerHTML="❤️";
 h.style.left=Math.random()*100+"vw";
-h.style.animationDuration=(Math.random()*3+4)+"s";
+h.style.animationDuration=(Math.random()*3+5)+"s";
 document.body.appendChild(h);
-setTimeout(()=>h.remove(),7000);
+setTimeout(()=>h.remove(),9000);
 }
 }
+
 
 // ================= FIRST YES =================
 
@@ -192,15 +198,16 @@ confetti();
 balloons();
 hearts();
 
-setTimeout(showTestPage,800);
+setTimeout(showTestPage,900);
 };
+
 
 // ================= UNA TEST PANNALAMA =================
 
 function showTestPage(){
 
 body.style.background=
-"url('https://media.giphy.com/media/l0MYC0LajbaPoEADu/giphy.gif') center/cover no-repeat";
+"url('https://i.imgur.com/6QKJf7K.gif') center/cover no-repeat"; // panda hug gif (working)
 
 content.innerHTML=`
 <div class="message">
@@ -215,12 +222,13 @@ Una test pannalama? 😘❤️
 `;
 }
 
+
 // ================= NO CLICK =================
 
 function showAngry(){
 
 body.style.background=
-"url('https://media.giphy.com/media/3o6Zt481isNVuQI1l6/giphy.gif') center/cover no-repeat";
+"url('https://i.imgur.com/9Y7W6G5.gif') center/cover no-repeat"; // angry beating gif (working)
 
 content.innerHTML=`
 <div class="message">
@@ -230,6 +238,7 @@ Mooditu YES amuku dee 😤❤️
 <button id="yesBtn" onclick="showTestPage()">⬅ Back</button>
 `;
 }
+
 
 // ================= TEMP NEXT =================
 
