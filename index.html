@@ -23,37 +23,28 @@ text-align:center;
 color:white;
 max-width:380px;
 padding:20px;
-animation:fade .6s ease;
-}
-
-@keyframes fade{
-from{opacity:0;transform:scale(.9)}
-to{opacity:1;transform:scale(1)}
 }
 
 .message{
 font-size:1.8rem;
-min-height:80px;
+margin-bottom:20px;
 }
 
 .buttons{
 position:relative;
-width:320px;
-height:220px;
+width:300px;
+height:200px;
 margin:auto;
 }
 
 button{
-padding:14px 32px;
+padding:14px 30px;
 font-size:1.1rem;
 border:none;
 border-radius:30px;
 cursor:pointer;
 margin:10px;
-transition:.2s;
 }
-
-button:hover{transform:scale(1.05)}
 
 #yesBtn{background:#4CAF50;color:white;}
 #noBtn{
@@ -85,15 +76,6 @@ font-size:1rem;
 
 .angry{
 font-size:3rem;
-animation:shake .4s infinite;
-}
-
-@keyframes shake{
-0%{transform:translateX(0)}
-25%{transform:translateX(-5px)}
-50%{transform:translateX(5px)}
-75%{transform:translateX(-5px)}
-100%{transform:translateX(0)}
 }
 </style>
 </head>
@@ -102,9 +84,9 @@ animation:shake .4s infinite;
 
 <div class="container" id="content">
 
-<div class="message" id="msg">Will you be my Valentine? 💘</div>
+<div class="message">Will you be my Valentine? 💘</div>
 
-<div class="buttons" id="btnBox">
+<div class="buttons" id="box">
 <button id="yesBtn">YES ❤️</button>
 <button id="noBtn">NO 💔</button>
 </div>
@@ -116,14 +98,14 @@ const body=document.getElementById("body");
 const content=document.getElementById("content");
 const yesBtn=document.getElementById("yesBtn");
 const noBtn=document.getElementById("noBtn");
-const box=document.getElementById("btnBox");
+const box=document.getElementById("box");
 
 let score=0;
 let q=0;
 let noSize=1;
 
-// ========== NO RUN AWAY ==========
-function dodge(){
+// ===== NO RUN =====
+function moveNo(){
 const maxX=box.clientWidth-noBtn.clientWidth;
 const maxY=box.clientHeight-noBtn.clientHeight;
 noBtn.style.left=Math.random()*maxX+"px";
@@ -136,51 +118,40 @@ const d=Math.hypot(
 e.clientX-(r.left+r.width/2),
 e.clientY-(r.top+r.height/2)
 );
-if(d<80) dodge();
+if(d<80) moveNo();
 });
-document.addEventListener("touchmove",dodge);
+document.addEventListener("touchmove",moveNo);
 
-// ========== TYPING ==========
-function type(text,cb){
-content.innerHTML=`<div class="message" id="typing"></div>`;
-let el=document.getElementById("typing");
-let i=0;
-let t=setInterval(()=>{
-el.innerHTML+=text[i]==="\n"?"<br>":text[i];
-i++;
-if(i>=text.length){
-clearInterval(t);
-if(cb)cb();
-}
-},35);
-}
-
-// ========== FIRST YES ==========
+// ===== YES FIRST =====
 yesBtn.onclick=()=>{
 body.style.background="url('https://media.giphy.com/media/l0MYC0LajbaPoEADu/giphy.gif') center/cover no-repeat";
 
-type("I know you’re my Valentine dee vennamavalee 💕🥰\n\nUna test pannalama? 😘❤️",()=>{
-content.innerHTML+=`<button id="yesBtn" onclick="nextQ()">YES ❤️</button>`;
-});
+content.innerHTML=`
+<div class="message">
+I know you’re my Valentine dee vennamavalee 💕🥰<br><br>
+Una test pannalama? 😘❤️
+</div>
+<button id="yesBtn" onclick="nextQ()">YES ❤️</button>
+`;
 };
 
-// ========== QUESTIONS ==========
+// ===== QUESTIONS =====
 function nextQ(){
 q++;
 body.style.background="linear-gradient(135deg,#ff758c,#ff7eb3)";
 
 if(q===1){
-show("Q1 ❤️ Who I like the most?",
+showQ("Who I like the most?",
 ["Priya","Chicky"],0);
 }
 
 if(q===2){
-show("Q2 📸 1st pic together?",
+showQ("1st pic together?",
 ["9th June 2024","9th June 2023","9th Sep 2023","9th Dec 2023"],2);
 }
 
 if(q===3){
-show("Q3 💋 1st forehead kiss?",
+showQ("1st kiss on forehead?",
 ["15th June 2024","9th June 2024","2nd June 2024","3rd June 2023"],0);
 }
 
@@ -197,17 +168,18 @@ finish();
 }
 }
 
-function show(text,opts,correct){
-type(text,()=>{
+function showQ(text,opts,correct){
+content.innerHTML=`<div class="message">${text}</div>`;
+
 opts.forEach((o,i)=>{
 let b=document.createElement("button");
 b.className="option";
 b.innerHTML=o;
-b.onclick=()=> i===correct?correctAns():wrong(()=>show(text,opts,correct));
+b.onclick=()=> i===correct ? correctAns() : wrong(()=>showQ(text,opts,correct));
 content.appendChild(b);
 });
+
 content.innerHTML+=`<div class="score">Score: ${score}</div>`;
-});
 }
 
 function correctAns(){
@@ -220,7 +192,7 @@ content.innerHTML=`<div class="angry">😡</div><div class="message">Wrong!</div
 setTimeout(retry,1200);
 }
 
-// ========== MARRIAGE ==========
+// ===== MARRIAGE =====
 function marriage(){
 noSize=1;
 content.innerHTML=`
@@ -240,14 +212,15 @@ if(noSize>0.5) content.querySelector(".message").innerHTML="Are you sure?? 😒"
 else if(noSize>0.3) content.querySelector(".message").innerHTML="Unaku ena vita evanum kedaika matan 😤";
 else if(noSize>0.15) content.querySelector(".message").innerHTML="Mooditu YES amuku dee 😡";
 else{
-type("Yes we can get married in 2026 💍😍",()=>setTimeout(nextQ,1200));
+content.innerHTML=`<div class="message">Yes we can get married in 2026 💍😍</div>`;
+setTimeout(nextQ,1500);
 }
 }
 
-// ========== LOVE INPUT ==========
+// ===== LOVE INPUT =====
 function loveInput(){
 content.innerHTML=`
-<div class="message">Q5 ❤️ One sentence to tell me</div>
+<div class="message">One sentence to tell me ❤️</div>
 <textarea id="loveText"></textarea>
 <button id="yesBtn" onclick="checkLove()">Submit 💖</button>
 <div class="score">Score: ${score}</div>
@@ -256,6 +229,7 @@ content.innerHTML=`
 
 function checkLove(){
 let t=document.getElementById("loveText").value.toLowerCase();
+
 if(t.includes("love")){
 score++;
 nextQ();
@@ -264,10 +238,17 @@ wrong(loveInput);
 }
 }
 
-// ========== FINAL ==========
+// ===== FINAL =====
 function finish(){
 body.style.background="url('https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif') center/cover no-repeat";
-type("🎉 Perfect Score Rani mavale 💖\nYou passed 😘🐻❤️");
+
+content.innerHTML=`
+<div class="message">
+Congrats Rani mavale 💖🐻<br>
+You passed 😘<br><br>
+Final Score: ${score}/5
+</div>
+`;
 }
 </script>
 
