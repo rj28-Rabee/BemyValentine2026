@@ -165,6 +165,27 @@ function secondNo(){
         <div class="message">
             Mooditu YES amuku dee 😤❤️
         </div>
+
+        <button class="yesSmall" onclick="backToTest()">⬅ Back</button>
+    `;
+}
+
+// BACK button function (ONLY NEW PART)
+function backToTest(){
+
+    // Go back to Una test pannalama page
+    body.style.background = "url('https://media.giphy.com/media/l0MYC0LajbaPoEADu/giphy.gif') center/cover no-repeat";
+
+    document.getElementById("content").innerHTML = `
+        <div class="message">
+            I know you’re my Valentine dee vennamavalee 💕🥰<br><br>
+            Una test pannalama? 😘❤️
+        </div>
+
+        <div class="actionBtns">
+            <button class="yesSmall" onclick="secondYes()">YES ❤️</button>
+            <button class="noSmall" onclick="secondNo()">NO 💔</button>
+        </div>
     `;
 }
 </script>
