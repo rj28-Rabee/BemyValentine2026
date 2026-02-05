@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,7 +13,7 @@ display:flex;
 justify-content:center;
 align-items:center;
 background:linear-gradient(135deg,#ff758c,#ff7eb3);
-font-family:Arial, sans-serif;
+font-family:Arial;
 overflow:hidden;
 transition:.8s;
 }
@@ -47,7 +47,10 @@ cursor:pointer;
 margin:10px;
 }
 
-#yesBtn{background:#4CAF50;color:white;}
+#yesBtn{
+background:#4CAF50;
+color:white;
+}
 
 #noBtn{
 background:#f44336;
@@ -58,7 +61,9 @@ top:90px;
 transition:.15s;
 }
 
-.actionBtns button{position:static}
+.actionBtns button{
+position:static;
+}
 
 /* Effects */
 .confetti{
@@ -129,7 +134,6 @@ const yesBtn=document.getElementById("yesBtn");
 const noBtn=document.getElementById("noBtn");
 const box=document.getElementById("box");
 
-
 // ===== NO RUN =====
 function moveNo(){
 const maxX=box.clientWidth-noBtn.clientWidth;
@@ -147,7 +151,6 @@ e.clientY-(r.top+r.height/2)
 if(d<80) moveNo();
 });
 document.addEventListener("touchmove",moveNo);
-
 
 // ===== EFFECTS =====
 function confetti(){
@@ -187,7 +190,6 @@ setTimeout(()=>h.remove(),10000);
 }
 }
 
-
 // ===== FIRST YES =====
 yesBtn.onclick=()=>{
 confetti();
@@ -196,12 +198,10 @@ hearts();
 setTimeout(showTestPage,900);
 };
 
-
 // ===== UNA TEST PANNALAMA =====
 function showTestPage(){
 
-body.style.background=
-"url('https://media.giphy.com/media/l0MYC0LajbaPoEADu/giphy.gif') center/cover no-repeat";
+body.style.background="url('panda.gif') center/cover no-repeat";
 
 content.innerHTML=`
 <div class="message">
@@ -216,15 +216,13 @@ Una test pannalama? 😘❤️
 `;
 }
 
-
-// ===== FIXED NO GIF =====
+// ===== NO CLICK (ANGRY) =====
 function showAngry(){
 
 body.style.background="linear-gradient(135deg,#ff758c,#ff7eb3)";
 
 content.innerHTML=`
-<img class="angryGif"
-src="https://media1.giphy.com/media/3o6Zt481isNVuQI1l6/giphy.gif">
+<img class="angryGif" src="angry.gif">
 
 <div class="message">
 Mooditu YES amuku dee 😤❤️
@@ -234,11 +232,10 @@ Mooditu YES amuku dee 😤❤️
 `;
 }
 
-
 // ===== TEMP NEXT =====
 function startNext(){
 body.style.background="linear-gradient(135deg,#ff758c,#ff7eb3)";
-content.innerHTML=`<div class="message">Next step coming 😄❤️</div>`;
+content.innerHTML="<div class='message'>Next step coming 😄❤️</div>";
 }
 </script>
 
