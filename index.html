@@ -7,136 +7,117 @@
 
 <style>
 body{
-    margin:0;
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background:linear-gradient(135deg,#ff758c,#ff7eb3);
-    font-family:Arial, sans-serif;
-    overflow:hidden;
-    transition:background 1s ease;
+margin:0;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:linear-gradient(135deg,#ff758c,#ff7eb3);
+font-family:Arial, sans-serif;
+overflow:hidden;
+transition:background 1s ease;
 }
 
-.container{
-    text-align:center;
-    color:white;
-}
+.container{text-align:center;color:white;}
 
-h1{
-    font-size:2.5rem;
-    margin-bottom:20px;
-}
+h1{font-size:2.5rem;margin-bottom:20px;}
 
-.message{
-    font-size:2rem;
-    line-height:1.4;
-}
+.message{font-size:2rem;line-height:1.4;}
 
 .buttons{
-    position:relative;
-    width:320px;
-    height:220px;
-    margin:auto;
+position:relative;
+width:320px;
+height:220px;
+margin:auto;
 }
 
-.actionBtns{
-    margin-top:25px;
-}
+.actionBtns{margin-top:25px;}
 
 button{
-    padding:14px 32px;
-    font-size:1.1rem;
-    border:none;
-    border-radius:30px;
-    cursor:pointer;
-    margin:10px;
+padding:14px 32px;
+font-size:1.1rem;
+border:none;
+border-radius:30px;
+cursor:pointer;
+margin:10px;
 }
 
 #yesBtn{background:#4CAF50;color:white;}
 
 #noBtn{
-    background:#f44336;
-    color:white;
-    position:absolute;
-    left:120px;
-    top:90px;
-    transition:left 0.2s ease, top 0.2s ease;
+background:#f44336;
+color:white;
+position:absolute;
+left:120px;
+top:90px;
+transition:left .2s ease, top .2s ease;
 }
 
 .yesSmall{background:#4CAF50;color:white;}
 .noSmall{background:#f44336;color:white;}
 
 .optionBtn{
-    background:#2196F3;
-    color:white;
-    display:block;
-    width:240px;
-    margin:12px auto;
+background:#2196F3;
+color:white;
+display:block;
+width:240px;
+margin:12px auto;
 }
 
-.score{
-    margin-top:15px;
-    font-size:1.3rem;
-}
+.score{margin-top:15px;font-size:1.3rem}
 
-/* 🎊 CONFETTI */
+/* 🎊 Confetti */
 .confetti{
-    position:fixed;
-    width:10px;
-    height:10px;
-    top:-20px;
-    animation:fall linear forwards;
+position:fixed;
+width:10px;
+height:10px;
+top:-20px;
+animation:fall linear forwards;
 }
-
 @keyframes fall{
-    to{transform:translateY(130vh) rotate(720deg);}
+to{transform:translateY(130vh) rotate(720deg);}
 }
 
-/* ❤️ HEARTS */
+/* ❤️ Hearts */
 .heart{
-    position:fixed;
-    font-size:22px;
-    bottom:-40px;
-    animation:heartUp linear forwards;
+position:fixed;
+font-size:22px;
+bottom:-40px;
+animation:heartUp linear forwards;
 }
-
 @keyframes heartUp{
-    to{transform:translateY(-140vh);}
+to{transform:translateY(-140vh);}
 }
 
-/* 🎈 BALLOONS */
+/* 🎈 Balloons */
 .balloon{
-    position:fixed;
-    width:35px;
-    height:45px;
-    border-radius:50%;
-    bottom:-60px;
-    animation:balloonUp linear forwards;
+position:fixed;
+width:35px;
+height:45px;
+border-radius:50%;
+bottom:-60px;
+animation:balloonUp linear forwards;
 }
-
 @keyframes balloonUp{
-    to{transform:translateY(-140vh);}
+to{transform:translateY(-140vh);}
 }
 
-/* 🎆 FIREWORK */
+/* 🎆 Firework */
 .firework{
-    position:fixed;
-    width:6px;
-    height:6px;
-    border-radius:50%;
-    animation:explode 1s ease-out forwards;
+position:fixed;
+width:6px;
+height:6px;
+border-radius:50%;
+animation:explode 1s ease-out forwards;
 }
-
 @keyframes explode{
-    from{transform:scale(1);opacity:1;}
-    to{transform:scale(6);opacity:0;}
+from{transform:scale(1);opacity:1;}
+to{transform:scale(6);opacity:0;}
 }
 
-/* Mobile */
 @media(max-width:600px){
-    h1{font-size:2rem;}
-    .message{font-size:1.5rem;}
+h1{font-size:2rem;}
+.message{font-size:1.5rem;}
 }
 </style>
 </head>
@@ -160,9 +141,9 @@ const box=document.querySelector(".buttons");
 const yesBtn=document.getElementById("yesBtn");
 const body=document.getElementById("body");
 
-let score = 0;
+let score=0;
 
-// ================= NO DODGE =================
+// ===== NO DODGE =====
 function dodge(){
 const maxX=box.clientWidth-noBtn.clientWidth;
 const maxY=box.clientHeight-noBtn.clientHeight;
@@ -178,10 +159,9 @@ e.clientY-(r.top+r.height/2)
 );
 if(d<80) dodge();
 });
-
 document.addEventListener("touchmove",dodge);
 
-// ================= EFFECTS =================
+// ===== EFFECTS =====
 function confetti(){
 const colors=["#ff0","#0f0","#0ff","#f0f","#fff","#f00","#ff69b4"];
 for(let i=0;i<120;i++){
@@ -231,7 +211,7 @@ setTimeout(()=>f.remove(),1000);
 }
 }
 
-// ================= FIRST YES =================
+// ===== FIRST YES =====
 yesBtn.onclick=()=>{
 confetti();
 hearts();
@@ -253,7 +233,7 @@ Una test pannalama? 😘❤️
 `;
 };
 
-// ================= SECOND NO =================
+// ===== SECOND NO =====
 function secondNo(){
 body.style.background="url('https://media.giphy.com/media/11tTNkNy1SdXGg/giphy.gif') center/cover no-repeat";
 
@@ -266,7 +246,7 @@ Mooditu YES amuku dee 😤❤️
 `;
 }
 
-// ================= BACK =================
+// ===== BACK =====
 function backToTest(){
 body.style.background="url('https://media.giphy.com/media/l0MYC0LajbaPoEADu/giphy.gif') center/cover no-repeat";
 
@@ -283,7 +263,7 @@ Una test pannalama? 😘❤️
 `;
 }
 
-// ================= QUESTION 1 =================
+// ===== QUESTION 1 =====
 function showQuestion1(){
 
 body.style.background="linear-gradient(135deg,#ff758c,#ff7eb3)";
@@ -301,28 +281,26 @@ Who I like the most?
 `;
 }
 
-// correct
+// ===== CORRECT =====
 function correctAnswer(){
 score++;
 
-document.getElementById("content").innerHTML=`
-<div class="message">
-Correct 😍💖
-</div>
+body.style.background="url('https://media.giphy.com/media/111ebonMs90YLu/giphy.gif') center/cover no-repeat";
 
+document.getElementById("content").innerHTML=`
+<div class="message">Correct 😍🎉</div>
 <div class="score">Score: ${score}</div>
+<button class="yesSmall" onclick="showQuestion1()">Next ➡</button>
 `;
 }
 
-// wrong → angry gif → back to same question
+// ===== WRONG =====
 function wrongAnswer(){
 
-body.style.background="url('https://media.giphy.com/media/3o6Zt481isNVuQI1l6/giphy.gif') center/cover no-repeat";
+body.style.background="url('https://media.giphy.com/media/11tTNkNy1SdXGg/giphy.gif') center/cover no-repeat";
 
 document.getElementById("content").innerHTML=`
-<div class="message">
-Wrong 😡👊
-</div>
+<div class="message">Wrong 😡👊 Try again!</div>
 `;
 
 setTimeout(showQuestion1,2000);
