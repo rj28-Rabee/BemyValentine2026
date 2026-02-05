@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Love Quiz ❤️</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Be My Valentine 💖</title>
 
 <style>
 body{
@@ -12,51 +12,58 @@ height:100vh;
 display:flex;
 justify-content:center;
 align-items:center;
-font-family:Arial;
 background:linear-gradient(135deg,#ff758c,#ff7eb3);
-color:white;
-text-align:center;
+font-family:Arial,sans-serif;
+overflow:hidden;
 transition:1s;
 }
 
 .container{
+text-align:center;
+color:white;
 max-width:380px;
 padding:20px;
-animation:fade 0.6s ease;
+animation:fade .6s ease;
 }
 
 @keyframes fade{
-from{opacity:0;transform:scale(0.9);}
-to{opacity:1;transform:scale(1);}
+from{opacity:0;transform:scale(.9)}
+to{opacity:1;transform:scale(1)}
 }
 
 .message{
 font-size:1.8rem;
-min-height:90px;
-animation:pop 0.5s ease;
+min-height:80px;
 }
 
-@keyframes pop{
-from{transform:scale(0.7);opacity:0;}
-to{transform:scale(1);opacity:1;}
+.buttons{
+position:relative;
+width:320px;
+height:220px;
+margin:auto;
 }
 
 button{
-padding:14px 30px;
+padding:14px 32px;
+font-size:1.1rem;
 border:none;
 border-radius:30px;
-margin:10px;
-font-size:1.1rem;
 cursor:pointer;
-transition:0.3s;
+margin:10px;
+transition:.2s;
 }
 
-button:hover{
-transform:scale(1.05);
-}
+button:hover{transform:scale(1.05)}
 
-.yes{background:#4CAF50;color:white;}
-.no{background:#f44336;color:white;}
+#yesBtn{background:#4CAF50;color:white;}
+#noBtn{
+background:#f44336;
+color:white;
+position:absolute;
+left:120px;
+top:90px;
+transition:.2s;
+}
 
 .option{
 display:block;
@@ -66,6 +73,8 @@ width:100%;
 margin:12px 0;
 }
 
+.score{margin-top:10px;font-size:1.2rem}
+
 textarea{
 width:100%;
 height:160px;
@@ -74,81 +83,104 @@ padding:10px;
 font-size:1rem;
 }
 
-.score{
-margin-top:15px;
-font-size:1.2rem;
-}
-
 .angry{
 font-size:3rem;
-animation:shake 0.4s infinite;
+animation:shake .4s infinite;
 }
 
 @keyframes shake{
-0%{transform:translateX(0);}
-25%{transform:translateX(-5px);}
-50%{transform:translateX(5px);}
-75%{transform:translateX(-5px);}
-100%{transform:translateX(0);}
+0%{transform:translateX(0)}
+25%{transform:translateX(-5px)}
+50%{transform:translateX(5px)}
+75%{transform:translateX(-5px)}
+100%{transform:translateX(0)}
 }
 </style>
 </head>
 
 <body id="body">
 
-<div class="container" id="content"></div>
+<div class="container" id="content">
+
+<div class="message" id="msg">Will you be my Valentine? 💘</div>
+
+<div class="buttons" id="btnBox">
+<button id="yesBtn">YES ❤️</button>
+<button id="noBtn">NO 💔</button>
+</div>
+
+</div>
 
 <script>
-const content=document.getElementById("content");
 const body=document.getElementById("body");
+const content=document.getElementById("content");
+const yesBtn=document.getElementById("yesBtn");
+const noBtn=document.getElementById("noBtn");
+const box=document.getElementById("btnBox");
 
 let score=0;
 let q=0;
+let noSize=1;
 
-// ===== TYPING EFFECT =====
-function typeText(text, done){
-content.innerHTML=`<div class="message" id="msg"></div>`;
-let box=document.getElementById("msg");
+// ========== NO RUN AWAY ==========
+function dodge(){
+const maxX=box.clientWidth-noBtn.clientWidth;
+const maxY=box.clientHeight-noBtn.clientHeight;
+noBtn.style.left=Math.random()*maxX+"px";
+noBtn.style.top=Math.random()*maxY+"px";
+}
+
+document.addEventListener("mousemove",e=>{
+const r=noBtn.getBoundingClientRect();
+const d=Math.hypot(
+e.clientX-(r.left+r.width/2),
+e.clientY-(r.top+r.height/2)
+);
+if(d<80) dodge();
+});
+document.addEventListener("touchmove",dodge);
+
+// ========== TYPING ==========
+function type(text,cb){
+content.innerHTML=`<div class="message" id="typing"></div>`;
+let el=document.getElementById("typing");
 let i=0;
-
 let t=setInterval(()=>{
- box.innerHTML+= text[i]==="\n"?"<br>":text[i];
- i++;
- if(i>=text.length){
- clearInterval(t);
- if(done) done();
- }
+el.innerHTML+=text[i]==="\n"?"<br>":text[i];
+i++;
+if(i>=text.length){
+clearInterval(t);
+if(cb)cb();
+}
 },35);
 }
 
-// ===== START =====
-typeText("Will you be my Valentine? 💘",()=>{
-content.innerHTML+=`<button class="yes" onclick="intro()">YES ❤️</button>`;
+// ========== FIRST YES ==========
+yesBtn.onclick=()=>{
+body.style.background="url('https://media.giphy.com/media/l0MYC0LajbaPoEADu/giphy.gif') center/cover no-repeat";
+
+type("I know you’re my Valentine dee vennamavalee 💕🥰\n\nUna test pannalama? 😘❤️",()=>{
+content.innerHTML+=`<button id="yesBtn" onclick="nextQ()">YES ❤️</button>`;
 });
+};
 
-function intro(){
-typeText("I know you’re my Valentine dee vennamavalee 💕🥰\n\nUna test pannalama? 😘❤️",()=>{
-content.innerHTML+=`<button class="yes" onclick="nextQ()">YES ❤️</button>`;
-});
-}
-
-// ===== QUESTIONS =====
-
+// ========== QUESTIONS ==========
 function nextQ(){
 q++;
+body.style.background="linear-gradient(135deg,#ff758c,#ff7eb3)";
 
 if(q===1){
-showOptions("Q1 ❤️ Who I like the most?",
+show("Q1 ❤️ Who I like the most?",
 ["Priya","Chicky"],0);
 }
 
 if(q===2){
-showOptions("Q2 📸 1st pic together?",
+show("Q2 📸 1st pic together?",
 ["9th June 2024","9th June 2023","9th Sep 2023","9th Dec 2023"],2);
 }
 
 if(q===3){
-showOptions("Q3 💋 1st forehead kiss?",
+show("Q3 💋 1st forehead kiss?",
 ["15th June 2024","9th June 2024","2nd June 2024","3rd June 2023"],0);
 }
 
@@ -165,13 +197,13 @@ finish();
 }
 }
 
-function showOptions(text, opts, correct){
-typeText(text, ()=>{
+function show(text,opts,correct){
+type(text,()=>{
 opts.forEach((o,i)=>{
 let b=document.createElement("button");
 b.className="option";
 b.innerHTML=o;
-b.onclick=()=> i===correct ? correctAns() : wrongAns(()=>showOptions(text,opts,correct));
+b.onclick=()=> i===correct?correctAns():wrong(()=>show(text,opts,correct));
 content.appendChild(b);
 });
 content.innerHTML+=`<div class="score">Score: ${score}</div>`;
@@ -183,21 +215,18 @@ score++;
 nextQ();
 }
 
-function wrongAns(retry){
+function wrong(retry){
 content.innerHTML=`<div class="angry">😡</div><div class="message">Wrong!</div>`;
 setTimeout(retry,1200);
 }
 
-// ===== MARRIAGE QUESTION =====
-
-let noSize=1;
-
+// ========== MARRIAGE ==========
 function marriage(){
 noSize=1;
 content.innerHTML=`
 <div class="message">Will you marry me? 💍</div>
-<button class="yes" onclick="score++;nextQ()">YES ❤️</button>
-<button class="no" id="noBtn" onclick="marryNo()">NO 💔</button>
+<button id="yesBtn" onclick="score++;nextQ()">YES ❤️</button>
+<button id="noBtn" onclick="marryNo()">NO 💔</button>
 <div class="score">Score: ${score}</div>
 `;
 }
@@ -207,48 +236,38 @@ let n=document.getElementById("noBtn");
 noSize*=0.7;
 n.style.transform=`scale(${noSize})`;
 
-if(noSize>0.5){
-content.querySelector(".message").innerHTML="Are you sure?? 😒";
-}
-else if(noSize>0.3){
-content.querySelector(".message").innerHTML="Unaku ena vita evanum kedaika matan 😤";
-}
-else if(noSize>0.15){
-content.querySelector(".message").innerHTML="Mooditu YES amuku dee 😡";
-}
+if(noSize>0.5) content.querySelector(".message").innerHTML="Are you sure?? 😒";
+else if(noSize>0.3) content.querySelector(".message").innerHTML="Unaku ena vita evanum kedaika matan 😤";
+else if(noSize>0.15) content.querySelector(".message").innerHTML="Mooditu YES amuku dee 😡";
 else{
-typeText("Yes we can get married in 2026 💍😍",()=>setTimeout(nextQ,1200));
+type("Yes we can get married in 2026 💍😍",()=>setTimeout(nextQ,1200));
 }
 }
 
-// ===== LOVE INPUT =====
-
+// ========== LOVE INPUT ==========
 function loveInput(){
 content.innerHTML=`
 <div class="message">Q5 ❤️ One sentence to tell me</div>
 <textarea id="loveText"></textarea>
-<button class="yes" onclick="checkLove()">Submit 💖</button>
+<button id="yesBtn" onclick="checkLove()">Submit 💖</button>
 <div class="score">Score: ${score}</div>
 `;
 }
 
 function checkLove(){
 let t=document.getElementById("loveText").value.toLowerCase();
-
 if(t.includes("love")){
 score++;
 nextQ();
-}
-else{
-wrongAns(loveInput);
+}else{
+wrong(loveInput);
 }
 }
 
-// ===== FINAL =====
-
+// ========== FINAL ==========
 function finish(){
 body.style.background="url('https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif') center/cover no-repeat";
-typeText("🎉 Perfect Score Rani mavale 💖\nYou passed 😘🐻❤️");
+type("🎉 Perfect Score Rani mavale 💖\nYou passed 😘🐻❤️");
 }
 </script>
 
