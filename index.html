@@ -77,6 +77,12 @@ button{
     color:white;
 }
 
+.backBtn{
+    background:#2196F3;
+    color:white;
+    margin-top:20px;
+}
+
 /* Mobile */
 @media(max-width:600px){
     h1{font-size:2rem;}
@@ -105,7 +111,7 @@ const box = document.querySelector(".buttons");
 const yesBtn = document.getElementById("yesBtn");
 const body = document.getElementById("body");
 
-// Dodge NO button first screen
+// Dodge NO on first screen
 function dodge(){
     const maxX = box.clientWidth - noBtn.clientWidth;
     const maxY = box.clientHeight - noBtn.clientHeight;
@@ -126,10 +132,12 @@ document.addEventListener("mousemove",(e)=>{
 document.addEventListener("touchmove", dodge);
 
 
-// YES CLICK (first screen)
-yesBtn.addEventListener("click",()=>{
+// FIRST YES CLICK
+yesBtn.addEventListener("click", showTestPage);
 
-    // Panda cute background
+// Show test page function
+function showTestPage(){
+
     body.style.background = "url('https://media.giphy.com/media/l0MYC0LajbaPoEADu/giphy.gif') center/cover no-repeat";
 
     document.getElementById("content").innerHTML = `
@@ -143,9 +151,9 @@ yesBtn.addEventListener("click",()=>{
             <button class="noSmall" onclick="secondNo()">NO 💔</button>
         </div>
     `;
-});
+}
 
-// If she clicks YES second time
+// Second YES
 function secondYes(){
     document.getElementById("content").innerHTML = `
         <div class="message">
@@ -155,16 +163,17 @@ function secondYes(){
     `;
 }
 
-// If she clicks NO second time
+// Second NO (angry screen)
 function secondNo(){
 
-    // Angry bear background
     body.style.background = "url('https://media.giphy.com/media/11tTNkNy1SdXGg/giphy.gif') center/cover no-repeat";
 
     document.getElementById("content").innerHTML = `
         <div class="message">
             Mooditu YES amuku dee 😤❤️
         </div>
+
+        <button class="backBtn" onclick="showTestPage()">⬅ Back</button>
     `;
 }
 </script>
