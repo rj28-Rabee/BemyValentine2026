@@ -66,8 +66,55 @@ margin:12px auto;
 
 .score{margin-top:15px;font-size:1.3rem}
 
-.navBtns{
-margin-top:20px;
+.navBtns{margin-top:20px}
+
+/* 🎊 Confetti */
+.confetti{
+position:fixed;
+width:10px;
+height:10px;
+top:-20px;
+animation:fall linear forwards;
+}
+@keyframes fall{
+to{transform:translateY(130vh) rotate(720deg);}
+}
+
+/* ❤️ Hearts */
+.heart{
+position:fixed;
+font-size:22px;
+bottom:-40px;
+animation:heartUp linear forwards;
+}
+@keyframes heartUp{
+to{transform:translateY(-140vh);}
+}
+
+/* 🎈 Balloons */
+.balloon{
+position:fixed;
+width:35px;
+height:45px;
+border-radius:50%;
+bottom:-60px;
+animation:balloonUp linear forwards;
+}
+@keyframes balloonUp{
+to{transform:translateY(-140vh);}
+}
+
+/* 🎆 Fireworks */
+.firework{
+position:fixed;
+width:6px;
+height:6px;
+border-radius:50%;
+animation:explode 1s ease-out forwards;
+}
+@keyframes explode{
+from{transform:scale(1);opacity:1;}
+to{transform:scale(6);opacity:0;}
 }
 
 @media(max-width:600px){
@@ -95,11 +142,11 @@ const noBtn=document.getElementById("noBtn");
 const box=document.querySelector(".buttons");
 const yesBtn=document.getElementById("yesBtn");
 const body=document.getElementById("body");
+const content=document.getElementById("content");
 
 let score=0;
 
-/* ===== CHECKPOINT 1 ===== */
-
+/* ===== NO DODGE ===== */
 function dodge(){
 const maxX=box.clientWidth-noBtn.clientWidth;
 const maxY=box.clientHeight-noBtn.clientHeight;
@@ -117,7 +164,63 @@ if(d<80) dodge();
 });
 document.addEventListener("touchmove",dodge);
 
+/* ===== EFFECTS ===== */
+function confetti(){
+const colors=["#ff0","#0f0","#0ff","#f0f","#fff","#f00","#ff69b4"];
+for(let i=0;i<120;i++){
+let c=document.createElement("div");
+c.className="confetti";
+c.style.left=Math.random()*100+"vw";
+c.style.backgroundColor=colors[Math.floor(Math.random()*colors.length)];
+c.style.animationDuration=(Math.random()*2+3)+"s";
+document.body.appendChild(c);
+setTimeout(()=>c.remove(),6000);
+}
+}
+
+function hearts(){
+for(let i=0;i<30;i++){
+let h=document.createElement("div");
+h.className="heart";
+h.innerHTML="❤️";
+h.style.left=Math.random()*100+"vw";
+h.style.animationDuration=(Math.random()*4+6)+"s";
+document.body.appendChild(h);
+setTimeout(()=>h.remove(),10000);
+}
+}
+
+function balloons(){
+for(let i=0;i<18;i++){
+let b=document.createElement("div");
+b.className="balloon";
+b.style.left=Math.random()*100+"vw";
+b.style.backgroundColor=["red","pink","yellow","blue","purple"][Math.floor(Math.random()*5)];
+b.style.animationDuration=(Math.random()*5+6)+"s";
+document.body.appendChild(b);
+setTimeout(()=>b.remove(),10000);
+}
+}
+
+function fireworks(){
+for(let i=0;i<20;i++){
+let f=document.createElement("div");
+f.className="firework";
+f.style.left=Math.random()*100+"vw";
+f.style.top=Math.random()*60+"vh";
+f.style.backgroundColor=["yellow","white","red","blue","pink"][Math.floor(Math.random()*5)];
+document.body.appendChild(f);
+setTimeout(()=>f.remove(),1000);
+}
+}
+
+/* ===== FIRST YES (celebration restored) ===== */
 yesBtn.onclick=()=>{
+confetti();
+hearts();
+balloons();
+fireworks();
+
 body.style.background="url('https://media.giphy.com/media/l0MYC0LajbaPoEADu/giphy.gif') center/cover no-repeat";
 
 content.innerHTML=`
@@ -133,13 +236,12 @@ Una test pannalama? 😘❤️
 `;
 };
 
+/* ===== ANGRY PAGE ===== */
 function secondNo(){
 body.style.background="url('https://media.giphy.com/media/11tTNkNy1SdXGg/giphy.gif') center/cover no-repeat";
 
 content.innerHTML=`
-<div class="message">
-Mooditu YES amuku dee 😤❤️
-</div>
+<div class="message">Mooditu YES amuku dee 😤❤️</div>
 <button class="yesSmall" onclick="backToTest()">⬅ Back</button>
 `;
 }
@@ -161,29 +263,19 @@ Una test pannalama? 😘❤️
 }
 
 /* ===== QUESTION 1 ===== */
-
 function showQ1(){
-
 body.style.background="linear-gradient(135deg,#ff758c,#ff7eb3)";
-
 content.innerHTML=`
-<div class="message">
-Question 1 ❤️<br>
-Who I like the most?
-</div>
-
+<div class="message">Question 1 ❤️<br>Who I like the most?</div>
 <button class="optionBtn" onclick="q1Correct()">A) Priya</button>
 <button class="optionBtn" onclick="q1Wrong()">B) Chicky</button>
-
 <div class="score">Score: ${score}</div>
 `;
 }
 
 function q1Correct(){
 score++;
-
 body.style.background="url('https://media.giphy.com/media/111ebonMs90YLu/giphy.gif') center/cover no-repeat";
-
 content.innerHTML=`
 <div class="message">Great 😍🎉</div>
 <div class="score">Score: ${score}</div>
@@ -193,22 +285,15 @@ content.innerHTML=`
 
 function q1Wrong(){
 body.style.background="url('https://media.giphy.com/media/11tTNkNy1SdXGg/giphy.gif') center/cover no-repeat";
-
 content.innerHTML=`<div class="message">Wrong 😡 Try again!</div>`;
 setTimeout(showQ1,2000);
 }
 
 /* ===== QUESTION 2 ===== */
-
 function showQ2(){
-
 body.style.background="linear-gradient(135deg,#ff758c,#ff7eb3)";
-
 content.innerHTML=`
-<div class="message">
-Question 2 ❤️<br>
-1st pic together??
-</div>
+<div class="message">Question 2 ❤️<br>1st pic together??</div>
 
 <button class="optionBtn" onclick="q2Wrong()">A) 9th June 2024</button>
 <button class="optionBtn" onclick="q2Wrong()">B) 9th June 2023</button>
@@ -225,9 +310,7 @@ Question 2 ❤️<br>
 
 function q2Correct(){
 score++;
-
 body.style.background="url('https://media.giphy.com/media/l4FGuhL4U2WyjdkaY/giphy.gif') center/cover no-repeat";
-
 content.innerHTML=`
 <div class="message">Awesome 😍🔥</div>
 <div class="score">Score: ${score}</div>
@@ -237,7 +320,6 @@ content.innerHTML=`
 
 function q2Wrong(){
 body.style.background="url('https://media.giphy.com/media/l3q2K5jinAlChoCLS/giphy.gif') center/cover no-repeat";
-
 content.innerHTML=`<div class="message">Oops 😡 Try again!</div>`;
 setTimeout(showQ2,2000);
 }
