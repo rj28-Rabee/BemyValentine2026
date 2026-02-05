@@ -53,10 +53,7 @@ button{
     margin:10px;
 }
 
-#yesBtn{
-    background:#4CAF50;
-    color:white;
-}
+#yesBtn{background:#4CAF50;color:white;}
 
 #noBtn{
     background:#f44336;
@@ -67,14 +64,20 @@ button{
     transition:left 0.2s ease, top 0.2s ease;
 }
 
-.yesSmall{
-    background:#4CAF50;
+.yesSmall{background:#4CAF50;color:white;}
+.noSmall{background:#f44336;color:white;}
+
+.optionBtn{
+    background:#2196F3;
     color:white;
+    display:block;
+    width:240px;
+    margin:12px auto;
 }
 
-.noSmall{
-    background:#f44336;
-    color:white;
+.score{
+    margin-top:15px;
+    font-size:1.3rem;
 }
 
 /* 🎊 CONFETTI */
@@ -134,7 +137,6 @@ button{
 @media(max-width:600px){
     h1{font-size:2rem;}
     .message{font-size:1.5rem;}
-    .buttons{width:280px;height:190px;}
 }
 </style>
 </head>
@@ -143,44 +145,43 @@ button{
 
 <div class="container" id="content">
 
-    <h1>Will you be my Valentine? 💘</h1>
+<h1>Will you be my Valentine? 💘</h1>
 
-    <div class="buttons">
-        <button id="yesBtn">YES ❤️</button>
-        <button id="noBtn">NO 💔</button>
-    </div>
+<div class="buttons">
+<button id="yesBtn">YES ❤️</button>
+<button id="noBtn">NO 💔</button>
+</div>
 
 </div>
 
 <script>
-const noBtn = document.getElementById("noBtn");
-const box = document.querySelector(".buttons");
-const yesBtn = document.getElementById("yesBtn");
-const body = document.getElementById("body");
+const noBtn=document.getElementById("noBtn");
+const box=document.querySelector(".buttons");
+const yesBtn=document.getElementById("yesBtn");
+const body=document.getElementById("body");
+
+let score = 0;
 
 // ================= NO DODGE =================
 function dodge(){
-    const maxX = box.clientWidth - noBtn.clientWidth;
-    const maxY = box.clientHeight - noBtn.clientHeight;
-
-    noBtn.style.left = Math.random()*maxX + "px";
-    noBtn.style.top = Math.random()*maxY + "px";
+const maxX=box.clientWidth-noBtn.clientWidth;
+const maxY=box.clientHeight-noBtn.clientHeight;
+noBtn.style.left=Math.random()*maxX+"px";
+noBtn.style.top=Math.random()*maxY+"px";
 }
 
-document.addEventListener("mousemove",(e)=>{
-    const r = noBtn.getBoundingClientRect();
-    const d = Math.hypot(
-        e.clientX - (r.left + r.width/2),
-        e.clientY - (r.top + r.height/2)
-    );
-    if(d < 80) dodge();
+document.addEventListener("mousemove",e=>{
+const r=noBtn.getBoundingClientRect();
+const d=Math.hypot(
+e.clientX-(r.left+r.width/2),
+e.clientY-(r.top+r.height/2)
+);
+if(d<80) dodge();
 });
 
-document.addEventListener("touchmove", dodge);
-
+document.addEventListener("touchmove",dodge);
 
 // ================= EFFECTS =================
-
 function confetti(){
 const colors=["#ff0","#0f0","#0ff","#f0f","#fff","#f00","#ff69b4"];
 for(let i=0;i<120;i++){
@@ -230,76 +231,101 @@ setTimeout(()=>f.remove(),1000);
 }
 }
 
+// ================= FIRST YES =================
+yesBtn.onclick=()=>{
+confetti();
+hearts();
+balloons();
+fireworks();
 
-// ================= FIRST YES CLICK =================
+body.style.background="url('https://media.giphy.com/media/l0MYC0LajbaPoEADu/giphy.gif') center/cover no-repeat";
 
-yesBtn.addEventListener("click",()=>{
+document.getElementById("content").innerHTML=`
+<div class="message">
+I know you’re my Valentine dee vennamavalee 💕🥰<br><br>
+Una test pannalama? 😘❤️
+</div>
 
-    // 🎉 PLAY EFFECTS
-    confetti();
-    hearts();
-    balloons();
-    fireworks();
-
-    // Panda background
-    body.style.background = "url('https://media.giphy.com/media/l0MYC0LajbaPoEADu/giphy.gif') center/cover no-repeat";
-
-    document.getElementById("content").innerHTML = `
-        <div class="message">
-            I know you’re my Valentine dee vennamavalee 💕🥰<br><br>
-            Una test pannalama? 😘❤️
-        </div>
-
-        <div class="actionBtns">
-            <button class="yesSmall" onclick="secondYes()">YES ❤️</button>
-            <button class="noSmall" onclick="secondNo()">NO 💔</button>
-        </div>
-    `;
-});
-
-
-// ================= SECOND YES =================
-function secondYes(){
-    document.getElementById("content").innerHTML = `
-        <div class="message">
-            Awww 😍💖<br>
-            My sweet Valentine forever 🥰❤️
-        </div>
-    `;
-}
-
+<div class="actionBtns">
+<button class="yesSmall" onclick="showQuestion1()">YES ❤️</button>
+<button class="noSmall" onclick="secondNo()">NO 💔</button>
+</div>
+`;
+};
 
 // ================= SECOND NO =================
 function secondNo(){
+body.style.background="url('https://media.giphy.com/media/11tTNkNy1SdXGg/giphy.gif') center/cover no-repeat";
 
-    body.style.background = "url('https://media.giphy.com/media/11tTNkNy1SdXGg/giphy.gif') center/cover no-repeat";
+document.getElementById("content").innerHTML=`
+<div class="message">
+Mooditu YES amuku dee 😤❤️
+</div>
 
-    document.getElementById("content").innerHTML = `
-        <div class="message">
-            Mooditu YES amuku dee 😤❤️
-        </div>
-
-        <button class="yesSmall" onclick="backToTest()">⬅ Back</button>
-    `;
+<button class="yesSmall" onclick="backToTest()">⬅ Back</button>
+`;
 }
-
 
 // ================= BACK =================
 function backToTest(){
+body.style.background="url('https://media.giphy.com/media/l0MYC0LajbaPoEADu/giphy.gif') center/cover no-repeat";
 
-    body.style.background = "url('https://media.giphy.com/media/l0MYC0LajbaPoEADu/giphy.gif') center/cover no-repeat";
+document.getElementById("content").innerHTML=`
+<div class="message">
+I know you’re my Valentine dee vennamavalee 💕🥰<br><br>
+Una test pannalama? 😘❤️
+</div>
 
-    document.getElementById("content").innerHTML = `
-        <div class="message">
-            I know you’re my Valentine dee vennamavalee 💕🥰<br><br>
-            Una test pannalama? 😘❤️
-        </div>
+<div class="actionBtns">
+<button class="yesSmall" onclick="showQuestion1()">YES ❤️</button>
+<button class="noSmall" onclick="secondNo()">NO 💔</button>
+</div>
+`;
+}
 
-        <div class="actionBtns">
-            <button class="yesSmall" onclick="secondYes()">YES ❤️</button>
-            <button class="noSmall" onclick="secondNo()">NO 💔</button>
-        </div>
-    `;
+// ================= QUESTION 1 =================
+function showQuestion1(){
+
+body.style.background="linear-gradient(135deg,#ff758c,#ff7eb3)";
+
+document.getElementById("content").innerHTML=`
+<div class="message">
+Question 1 ❤️<br>
+Who I like the most?
+</div>
+
+<button class="optionBtn" onclick="correctAnswer()">A) Priya</button>
+<button class="optionBtn" onclick="wrongAnswer()">B) Chicky</button>
+
+<div class="score">Score: ${score}</div>
+`;
+}
+
+// correct
+function correctAnswer(){
+score++;
+
+document.getElementById("content").innerHTML=`
+<div class="message">
+Correct 😍💖
+</div>
+
+<div class="score">Score: ${score}</div>
+`;
+}
+
+// wrong → angry gif → back to same question
+function wrongAnswer(){
+
+body.style.background="url('https://media.giphy.com/media/3o6Zt481isNVuQI1l6/giphy.gif') center/cover no-repeat";
+
+document.getElementById("content").innerHTML=`
+<div class="message">
+Wrong 😡👊
+</div>
+`;
+
+setTimeout(showQuestion1,2000);
 }
 </script>
 
