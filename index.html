@@ -21,20 +21,9 @@ transition:background 1s ease;
 .container{text-align:center;color:white;}
 .message{font-size:2rem;line-height:1.4;}
 
-.buttons{
-position:relative;
-width:320px;
-height:220px;
-margin:auto;
-}
-
+.buttons{position:relative;width:320px;height:220px;margin:auto;}
 button{
-padding:14px 32px;
-font-size:1.1rem;
-border:none;
-border-radius:30px;
-cursor:pointer;
-margin:10px;
+padding:14px 32px;font-size:1.1rem;border:none;border-radius:30px;cursor:pointer;margin:10px;
 }
 
 #yesBtn{background:#4CAF50;color:white;}
@@ -44,16 +33,12 @@ margin:10px;
 .noSmall{background:#f44336;color:white;}
 
 .optionBtn{
-background:#2196F3;
-color:white;
-display:block;
-width:270px;
-margin:12px auto;
+background:#2196F3;color:white;display:block;width:270px;margin:12px auto;
 }
-
 .score{margin-top:15px;font-size:1.3rem}
+.navBtns{margin-top:20px}
 
-/* celebration */
+/* celebration effects */
 .confetti{position:fixed;width:10px;height:10px;top:-20px;animation:fall linear forwards;}
 @keyframes fall{to{transform:translateY(130vh) rotate(720deg);}}
 
@@ -86,8 +71,10 @@ const body=document.getElementById("body");
 const content=document.getElementById("content");
 
 let score=0;
+let noClicks=0;
+let noScale=1;
 
-/* NO RUN */
+/* NO dodge logic */
 function dodge(){
 noBtn.style.left=Math.random()*(box.clientWidth-noBtn.clientWidth)+"px";
 noBtn.style.top=Math.random()*(box.clientHeight-noBtn.clientHeight)+"px";
@@ -97,7 +84,7 @@ const r=noBtn.getBoundingClientRect();
 if(Math.hypot(e.clientX-(r.left+r.width/2),e.clientY-(r.top+r.height/2))<80) dodge();
 });
 
-/* effects */
+/* celebration */
 function confetti(){
 for(let i=0;i<120;i++){
 let c=document.createElement("div");
@@ -107,8 +94,8 @@ c.style.background=["#ff0","#0ff","#f0f","#0f0","#fff","#f00"][Math.random()*6|0
 c.style.animationDuration=(Math.random()*2+3)+"s";
 document.body.appendChild(c);
 setTimeout(()=>c.remove(),6000);
-}}
-
+}
+}
 function hearts(){
 for(let i=0;i<30;i++){
 let h=document.createElement("div");
@@ -116,9 +103,9 @@ h.className="heart";h.innerHTML="❤️";
 h.style.left=Math.random()*100+"vw";
 h.style.animationDuration=(Math.random()*4+6)+"s";
 document.body.appendChild(h);
-setTimeout(()=>h.remove(),10000);
-}}
-
+setTimeout(()=>h.remove(),9000);
+}
+}
 function balloons(){
 for(let i=0;i<18;i++){
 let b=document.createElement("div");
@@ -127,8 +114,9 @@ b.style.left=Math.random()*100+"vw";
 b.style.background=["red","pink","yellow","blue","purple"][Math.random()*5|0];
 b.style.animationDuration=(Math.random()*5+6)+"s";
 document.body.appendChild(b);
-setTimeout(()=>b.remove(),10000);
-}}
+setTimeout(()=>b.remove(),9000);
+}
+}
 
 /* FIRST YES */
 yesBtn.onclick=()=>{
@@ -141,17 +129,14 @@ content.innerHTML=`
 I know you’re my Valentine dee 💕🥰<br><br>
 Una test pannalama? 😘❤️
 </div>
-
 <button class="yesSmall" onclick="showQ1()">YES ❤️</button>
 <button class="noSmall" onclick="secondNo()">NO 💔</button>`;
 };
 
-/* angry */
+/* angry NO first screen */
 function secondNo(){
 body.style.background="url('https://media.giphy.com/media/11tTNkNy1SdXGg/giphy.gif') center/cover no-repeat";
-
-content.innerHTML=`
-<div class="message">Mooditu YES amuku dee 😤❤️</div>
+content.innerHTML=`<div class="message">Mooditu YES amuku dee 😤❤️</div>
 <button class="yesSmall" onclick="yesBtn.onclick()">⬅ Back</button>`;
 }
 
@@ -164,7 +149,6 @@ content.innerHTML=`
 <button class="optionBtn" onclick="wrong('https://media.giphy.com/media/3o7aD2saalBwwftBIY/giphy.gif',showQ1)">B) Chicky</button>
 <div class="score">Score: ${score}</div>`;
 }
-
 function q1Correct(){
 score++;
 success("https://media.giphy.com/media/111ebonMs90YLu/giphy.gif",showQ2);
@@ -175,16 +159,13 @@ function showQ2(){
 body.style.background="linear-gradient(135deg,#ff758c,#ff7eb3)";
 content.innerHTML=`
 <div class="message">Question 2 ❤️<br>1st pic together??</div>
-
 <button class="optionBtn" onclick="wrong('https://media.giphy.com/media/l1J9u3TZfpmeDLkD6/giphy.gif',showQ2)">A) 9th June 2024</button>
 <button class="optionBtn" onclick="wrong('https://media.giphy.com/media/26ufdipQqU2lhNA4g/giphy.gif',showQ2)">B) 9th June 2023</button>
 <button class="optionBtn" onclick="q2Correct()">C) 9th Sep 2023</button>
 <button class="optionBtn" onclick="wrong('https://media.giphy.com/media/3o6ZtaO9BZHcOjmErm/giphy.gif',showQ2)">D) 9th Dec 2023</button>
-
 <div class="score">Score: ${score}</div>
 <button class="noSmall" onclick="showQ1()">⬅ Previous</button>`;
 }
-
 function q2Correct(){
 score++;
 success("https://media.giphy.com/media/l4FGuhL4U2WyjdkaY/giphy.gif",showQ3);
@@ -195,85 +176,66 @@ function showQ3(){
 body.style.background="linear-gradient(135deg,#ff758c,#ff7eb3)";
 content.innerHTML=`
 <div class="message">Question 3 ❤️<br>1st Kiss on forehead??</div>
-
 <button class="optionBtn" onclick="q3Correct()">A) 15th June 2024</button>
 <button class="optionBtn" onclick="wrong('https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif',showQ3)">B) 9th June 2024</button>
 <button class="optionBtn" onclick="wrong('https://media.giphy.com/media/26ufdipQqU2lhNA4g/giphy.gif',showQ3)">C) 2nd June 2024</button>
 <button class="optionBtn" onclick="wrong('https://media.giphy.com/media/3o6ZtaO9BZHcOjmErm/giphy.gif',showQ3)">D) 3rd June 2023</button>
-
 <div class="score">Score: ${score}</div>
 <button class="noSmall" onclick="showQ2()">⬅ Previous</button>`;
 }
-
 function q3Correct(){
 score++;
 success("https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif",showQ4);
 }
 
-/* Q4 FIXED */
-let noClicks=0,noScale=1;
-
+/* Q4 */
 function showQ4(){
-noClicks=0; noScale=1;
+noClicks=0;noScale=1;
 body.style.background="linear-gradient(135deg,#ff758c,#ff7eb3)";
-
 content.innerHTML=`
 <div class="message">Question 4 ❤️<br>Will you marry me? 💍</div>
 <div id="msg" class="message"></div>
-
 <button class="yesSmall" onclick="q4Yes()">YES ❤️</button>
 <button id="noBtnQ4" class="noSmall" onclick="q4No()">NO 💔</button>
-
 <button class="noSmall" onclick="showQ3()">⬅ Previous</button>`;
 }
+function q4Yes(){score++;showQ5();}
+function q4No(){noScale*=0.7;document.getElementById("noBtnQ4").style.transform=`scale(${noScale})`;noClicks++;const msgs=["Are you sure?? 😒","Are you sure unaku ena vita vera evanum kedaika matan 😤","Soldra pecha kelu dee venna mavalee 😡 Mooditu YES amuku","Athana sona pecha keta thana ne rani mavale 😏❤️"];document.getElementById("msg").innerHTML=noClicks<=4?msgs[noClicks-1]:"";if(noClicks>4)showQ5();}
 
-function q4Yes(){
-score++;
-finalMarried();
-}
-
-function q4No(){
-const btn=document.getElementById("noBtnQ4");
-const msg=document.getElementById("msg");
-
-noScale*=0.7;
-btn.style.transform=`scale(${noScale})`;
-noClicks++;
-
-const texts=[
-"Are you sure?? 😒",
-"Are you sure unaku ena vita vera evanum kedaika matan 😤",
-"Soldra pecha kelu dee venna mavalee 😡 Mooditu YES amuku",
-"Athana sona pecha keta thana ne rani mavale 😏❤️"
-];
-
-if(noClicks<=4) msg.innerHTML=texts[noClicks-1];
-else finalMarried();
-}
-
-function finalMarried(){
-body.style.background="url('https://media.giphy.com/media/3ohs4BSacFKI7A717y/giphy.gif') center/cover no-repeat";
+/* Q5 */
+function showQ5(){
+body.style.background="linear-gradient(135deg,#ff758c,#ff7eb3)";
 content.innerHTML=`
-<div class="message" style="color:black;font-weight:bold">
-Yes we can get married in 2026 💍❤️
-</div>
-<button class="yesSmall">Next ➡</button>`;
+<div class="message">Question 5 ❤️<br>What’s the one thing you want to tell me?</div>
+<textarea id="loveInput" style="width:80%;height:140px;font-size:1rem;border-radius:10px;"></textarea>
+<button class="yesSmall" onclick="submitLove()">Submit 💖</button>
+<button class="noSmall" onclick="showQ4()">⬅ Previous</button>`;
+}
+function submitLove(){
+let text=document.getElementById("loveInput").value.trim().toLowerCase();
+
+// send to google form
+fetch("https://docs.google.com/forms/d/e/1FAIpQLSf8UGsABkm7ESPZhW1Io725Rjad4qCFeEbI-zk8PgzmhdEPrw/formResponse?entry.1351608413="+encodeURIComponent(text), {
+method:"POST",mode:"no-cors"
+});
+
+// check if it contains love
+if(text.includes("love")){
+body.style.background="url('https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif') center/cover no-repeat";
+content.innerHTML=`<div class="message">Love you dee pattuuuu 😘💖</div><button class="yesSmall">Finish 🎉</button>`;
+}else{
+body.style.background="url('https://media.giphy.com/media/3o7aD2saalBwwftBIY/giphy.gif') center/cover no-repeat";
+content.innerHTML=`<div class="message">Idu thapu 😤 correct ah solu!</div>`;
+setTimeout(showQ5,2000);
+}
 }
 
 /* helpers */
 function success(gif,next){
 body.style.background=`url('${gif}') center/cover no-repeat`;
-content.innerHTML=`
-<div class="message">Great 😍🎉</div>
-<div class="score">Score: ${score}</div>
-<button class="yesSmall" onclick="${next.name}()">Next ➡</button>`;
+content.innerHTML=`<div class="message">Great 😍🎉</div><div class="score">Score: ${score}</div><button class="yesSmall" onclick="${next.name}()">Next ➡</button>`;
 }
-
-function wrong(gif,back){
-body.style.background=`url('${gif}') center/cover no-repeat`;
-content.innerHTML=`<div class="message">Wrong 😡 Try again!</div>`;
-setTimeout(back,2000);
-}
+function wrong(gif,back){body.style.background=`url('${gif}') center/cover no-repeat`;content.innerHTML=`<div class="message">Wrong 😡 Try again!</div>`;setTimeout(back,2000);}
 </script>
 
 </body>
