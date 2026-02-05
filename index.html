@@ -15,17 +15,22 @@ body{
     background:linear-gradient(135deg,#ff758c,#ff7eb3);
     font-family:Arial, sans-serif;
     overflow:hidden;
+    transition:background 1s ease;
 }
 
 .container{
     text-align:center;
     color:white;
-    z-index:10;
 }
 
 h1{
     font-size:2.5rem;
-    margin-bottom:30px;
+    margin-bottom:20px;
+}
+
+.message{
+    font-size:2rem;
+    line-height:1.4;
 }
 
 .buttons{
@@ -35,12 +40,17 @@ h1{
     margin:auto;
 }
 
+.actionBtns{
+    margin-top:25px;
+}
+
 button{
-    padding:15px 35px;
-    font-size:1.2rem;
+    padding:14px 32px;
+    font-size:1.1rem;
     border:none;
     border-radius:30px;
     cursor:pointer;
+    margin:10px;
 }
 
 #yesBtn{
@@ -54,86 +64,48 @@ button{
     position:absolute;
     left:120px;
     top:90px;
-    transition: left 0.2s ease, top 0.2s ease;
+    transition:left 0.2s ease, top 0.2s ease;
 }
 
-/* 🎊 CONFETTI */
-.confetti{
-    position:fixed;
-    width:10px;
-    height:10px;
-    animation:confettiFall linear forwards;
+.yesSmall{
+    background:#4CAF50;
+    color:white;
 }
 
-@keyframes confettiFall{
-    from{transform:translateY(-20px) rotate(0deg);}
-    to{transform:translateY(110vh) rotate(720deg);}
-}
-
-/* 🎈 BALLOONS */
-.balloon{
-    position:fixed;
-    width:35px;
-    height:45px;
-    border-radius:50%;
-    animation:balloonUp linear forwards;
-}
-
-@keyframes balloonUp{
-    from{transform:translateY(110vh);}
-    to{transform:translateY(-120px);}
-}
-
-/* ❤️ HEARTS */
-.heart{
-    position:fixed;
-    font-size:22px;
-    animation:heartFly linear forwards;
-}
-
-@keyframes heartFly{
-    from{transform:translateY(100vh);}
-    to{transform:translateY(-100px);}
-}
-
-/* 🎆 FIREWORK */
-.firework{
-    position:fixed;
-    width:6px;
-    height:6px;
-    border-radius:50%;
-    animation:explode 1s ease-out forwards;
-}
-
-@keyframes explode{
-    from{transform:scale(1);opacity:1;}
-    to{transform:scale(6);opacity:0;}
+.noSmall{
+    background:#f44336;
+    color:white;
 }
 
 /* Mobile */
 @media(max-width:600px){
     h1{font-size:2rem;}
+    .message{font-size:1.5rem;}
     .buttons{width:280px;height:190px;}
 }
 </style>
 </head>
 
-<body>
+<body id="body">
 
 <div class="container" id="content">
+
     <h1>Will you be my Valentine? 💘</h1>
+
     <div class="buttons">
         <button id="yesBtn">YES ❤️</button>
         <button id="noBtn">NO 💔</button>
     </div>
+
 </div>
 
 <script>
 const noBtn = document.getElementById("noBtn");
 const box = document.querySelector(".buttons");
 const yesBtn = document.getElementById("yesBtn");
+const body = document.getElementById("body");
 
-// Smart dodge logic
+// Dodge NO button first screen
 function dodge(){
     const maxX = box.clientWidth - noBtn.clientWidth;
     const maxY = box.clientHeight - noBtn.clientHeight;
@@ -142,93 +114,59 @@ function dodge(){
     noBtn.style.top = Math.random()*maxY + "px";
 }
 
-// Move when mouse gets near
 document.addEventListener("mousemove",(e)=>{
-    const rect = noBtn.getBoundingClientRect();
-    const distance = Math.hypot(
-        e.clientX - (rect.left + rect.width/2),
-        e.clientY - (rect.top + rect.height/2)
+    const r = noBtn.getBoundingClientRect();
+    const d = Math.hypot(
+        e.clientX - (r.left + r.width/2),
+        e.clientY - (r.top + r.height/2)
     );
-
-    if(distance < 80){ // closeness sensitivity
-        dodge();
-    }
+    if(d < 80) dodge();
 });
 
-// Mobile touch dodge
-document.addEventListener("touchmove",dodge);
+document.addEventListener("touchmove", dodge);
 
-// 🎊 Confetti
-function confettiRain(){
-    const colors=["#ff0","#0f0","#0ff","#f0f","#fff","#f00","#ff69b4"];
 
-    for(let i=0;i<120;i++){
-        const c=document.createElement("div");
-        c.className="confetti";
-        c.style.left=Math.random()*100+"vw";
-        c.style.backgroundColor=colors[Math.floor(Math.random()*colors.length)];
-        c.style.animationDuration=(Math.random()*2+2)+"s";
-        document.body.appendChild(c);
-        setTimeout(()=>c.remove(),4000);
-    }
-}
-
-// 🎈 Balloons
-function balloonFlow(){
-    for(let i=0;i<20;i++){
-        const b=document.createElement("div");
-        b.className="balloon";
-        b.style.left=Math.random()*100+"vw";
-        b.style.backgroundColor=["red","pink","yellow","blue","purple"][Math.floor(Math.random()*5)];
-        b.style.animationDuration=(Math.random()*4+5)+"s";
-        document.body.appendChild(b);
-        setTimeout(()=>b.remove(),8000);
-    }
-}
-
-// ❤️ Hearts
-function heartsFly(){
-    for(let i=0;i<30;i++){
-        const h=document.createElement("div");
-        h.className="heart";
-        h.innerHTML="❤️";
-        h.style.left=Math.random()*100+"vw";
-        h.style.animationDuration=(Math.random()*3+4)+"s";
-        document.body.appendChild(h);
-        setTimeout(()=>h.remove(),7000);
-    }
-}
-
-// 🎆 Fireworks
-function fireworks(){
-    for(let i=0;i<20;i++){
-        const f=document.createElement("div");
-        f.className="firework";
-        f.style.left=Math.random()*100+"vw";
-        f.style.top=Math.random()*50+"vh";
-        f.style.backgroundColor=["yellow","white","red","blue","pink"][Math.floor(Math.random()*5)];
-        document.body.appendChild(f);
-        setTimeout(()=>f.remove(),1000);
-    }
-}
-
-// YES CLICK
+// YES CLICK (first screen)
 yesBtn.addEventListener("click",()=>{
-    document.getElementById("content").innerHTML=`
-        <h1>YAYYYY!!! 💖🎉</h1>
-        <h1>I’m sooo happy 😍</h1>
+
+    // Panda cute background
+    body.style.background = "url('https://media.giphy.com/media/l0MYC0LajbaPoEADu/giphy.gif') center/cover no-repeat";
+
+    document.getElementById("content").innerHTML = `
+        <div class="message">
+            I know you’re my Valentine dee vennamavalee 💕🥰<br><br>
+            Una test pannalama? 😘❤️
+        </div>
+
+        <div class="actionBtns">
+            <button class="yesSmall" onclick="secondYes()">YES ❤️</button>
+            <button class="noSmall" onclick="secondNo()">NO 💔</button>
+        </div>
     `;
-
-    confettiRain();
-    balloonFlow();
-    heartsFly();
-    fireworks();
-
-    setInterval(confettiRain,2000);
-    setInterval(balloonFlow,4000);
-    setInterval(heartsFly,3000);
-    setInterval(fireworks,2500);
 });
+
+// If she clicks YES second time
+function secondYes(){
+    document.getElementById("content").innerHTML = `
+        <div class="message">
+            Awww 😍💖<br>
+            My sweet Valentine forever 🥰❤️
+        </div>
+    `;
+}
+
+// If she clicks NO second time
+function secondNo(){
+
+    // Angry bear background
+    body.style.background = "url('https://media.giphy.com/media/11tTNkNy1SdXGg/giphy.gif') center/cover no-repeat";
+
+    document.getElementById("content").innerHTML = `
+        <div class="message">
+            Mooditu YES amuku dee 😤❤️
+        </div>
+    `;
+}
 </script>
 
 </body>
