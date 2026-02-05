@@ -77,6 +77,59 @@ button{
     color:white;
 }
 
+/* 🎊 CONFETTI */
+.confetti{
+    position:fixed;
+    width:10px;
+    height:10px;
+    top:-20px;
+    animation:fall linear forwards;
+}
+
+@keyframes fall{
+    to{transform:translateY(130vh) rotate(720deg);}
+}
+
+/* ❤️ HEARTS */
+.heart{
+    position:fixed;
+    font-size:22px;
+    bottom:-40px;
+    animation:heartUp linear forwards;
+}
+
+@keyframes heartUp{
+    to{transform:translateY(-140vh);}
+}
+
+/* 🎈 BALLOONS */
+.balloon{
+    position:fixed;
+    width:35px;
+    height:45px;
+    border-radius:50%;
+    bottom:-60px;
+    animation:balloonUp linear forwards;
+}
+
+@keyframes balloonUp{
+    to{transform:translateY(-140vh);}
+}
+
+/* 🎆 FIREWORK */
+.firework{
+    position:fixed;
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    animation:explode 1s ease-out forwards;
+}
+
+@keyframes explode{
+    from{transform:scale(1);opacity:1;}
+    to{transform:scale(6);opacity:0;}
+}
+
 /* Mobile */
 @media(max-width:600px){
     h1{font-size:2rem;}
@@ -105,7 +158,7 @@ const box = document.querySelector(".buttons");
 const yesBtn = document.getElementById("yesBtn");
 const body = document.getElementById("body");
 
-// Dodge NO button first screen
+// ================= NO DODGE =================
 function dodge(){
     const maxX = box.clientWidth - noBtn.clientWidth;
     const maxY = box.clientHeight - noBtn.clientHeight;
@@ -126,10 +179,69 @@ document.addEventListener("mousemove",(e)=>{
 document.addEventListener("touchmove", dodge);
 
 
-// YES CLICK (first screen)
+// ================= EFFECTS =================
+
+function confetti(){
+const colors=["#ff0","#0f0","#0ff","#f0f","#fff","#f00","#ff69b4"];
+for(let i=0;i<120;i++){
+let c=document.createElement("div");
+c.className="confetti";
+c.style.left=Math.random()*100+"vw";
+c.style.backgroundColor=colors[Math.floor(Math.random()*colors.length)];
+c.style.animationDuration=(Math.random()*2+3)+"s";
+document.body.appendChild(c);
+setTimeout(()=>c.remove(),6000);
+}
+}
+
+function hearts(){
+for(let i=0;i<30;i++){
+let h=document.createElement("div");
+h.className="heart";
+h.innerHTML="❤️";
+h.style.left=Math.random()*100+"vw";
+h.style.animationDuration=(Math.random()*4+6)+"s";
+document.body.appendChild(h);
+setTimeout(()=>h.remove(),10000);
+}
+}
+
+function balloons(){
+for(let i=0;i<18;i++){
+let b=document.createElement("div");
+b.className="balloon";
+b.style.left=Math.random()*100+"vw";
+b.style.backgroundColor=["red","pink","yellow","blue","purple"][Math.floor(Math.random()*5)];
+b.style.animationDuration=(Math.random()*5+6)+"s";
+document.body.appendChild(b);
+setTimeout(()=>b.remove(),10000);
+}
+}
+
+function fireworks(){
+for(let i=0;i<20;i++){
+let f=document.createElement("div");
+f.className="firework";
+f.style.left=Math.random()*100+"vw";
+f.style.top=Math.random()*60+"vh";
+f.style.backgroundColor=["yellow","white","red","blue","pink"][Math.floor(Math.random()*5)];
+document.body.appendChild(f);
+setTimeout(()=>f.remove(),1000);
+}
+}
+
+
+// ================= FIRST YES CLICK =================
+
 yesBtn.addEventListener("click",()=>{
 
-    // Panda cute background
+    // 🎉 PLAY EFFECTS
+    confetti();
+    hearts();
+    balloons();
+    fireworks();
+
+    // Panda background
     body.style.background = "url('https://media.giphy.com/media/l0MYC0LajbaPoEADu/giphy.gif') center/cover no-repeat";
 
     document.getElementById("content").innerHTML = `
@@ -145,7 +257,8 @@ yesBtn.addEventListener("click",()=>{
     `;
 });
 
-// If she clicks YES second time
+
+// ================= SECOND YES =================
 function secondYes(){
     document.getElementById("content").innerHTML = `
         <div class="message">
@@ -155,10 +268,10 @@ function secondYes(){
     `;
 }
 
-// If she clicks NO second time
+
+// ================= SECOND NO =================
 function secondNo(){
 
-    // Angry bear background
     body.style.background = "url('https://media.giphy.com/media/11tTNkNy1SdXGg/giphy.gif') center/cover no-repeat";
 
     document.getElementById("content").innerHTML = `
@@ -170,10 +283,10 @@ function secondNo(){
     `;
 }
 
-// BACK button function (ONLY NEW PART)
+
+// ================= BACK =================
 function backToTest(){
 
-    // Go back to Una test pannalama page
     body.style.background = "url('https://media.giphy.com/media/l0MYC0LajbaPoEADu/giphy.gif') center/cover no-repeat";
 
     document.getElementById("content").innerHTML = `
