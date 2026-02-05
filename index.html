@@ -19,9 +19,7 @@ transition:background 1s ease;
 }
 
 .container{text-align:center;color:white;}
-
 h1{font-size:2.5rem;margin-bottom:20px;}
-
 .message{font-size:2rem;line-height:1.4;}
 
 .buttons{
@@ -65,57 +63,20 @@ margin:12px auto;
 }
 
 .score{margin-top:15px;font-size:1.3rem}
-
 .navBtns{margin-top:20px}
 
-/* 🎊 Confetti */
-.confetti{
-position:fixed;
-width:10px;
-height:10px;
-top:-20px;
-animation:fall linear forwards;
-}
-@keyframes fall{
-to{transform:translateY(130vh) rotate(720deg);}
-}
+/* Effects */
+.confetti{position:fixed;width:10px;height:10px;top:-20px;animation:fall linear forwards;}
+@keyframes fall{to{transform:translateY(130vh) rotate(720deg);}}
 
-/* ❤️ Hearts */
-.heart{
-position:fixed;
-font-size:22px;
-bottom:-40px;
-animation:heartUp linear forwards;
-}
-@keyframes heartUp{
-to{transform:translateY(-140vh);}
-}
+.heart{position:fixed;font-size:22px;bottom:-40px;animation:heartUp linear forwards;}
+@keyframes heartUp{to{transform:translateY(-140vh);}}
 
-/* 🎈 Balloons */
-.balloon{
-position:fixed;
-width:35px;
-height:45px;
-border-radius:50%;
-bottom:-60px;
-animation:balloonUp linear forwards;
-}
-@keyframes balloonUp{
-to{transform:translateY(-140vh);}
-}
+.balloon{position:fixed;width:35px;height:45px;border-radius:50%;bottom:-60px;animation:balloonUp linear forwards;}
+@keyframes balloonUp{to{transform:translateY(-140vh);}}
 
-/* 🎆 Fireworks */
-.firework{
-position:fixed;
-width:6px;
-height:6px;
-border-radius:50%;
-animation:explode 1s ease-out forwards;
-}
-@keyframes explode{
-from{transform:scale(1);opacity:1;}
-to{transform:scale(6);opacity:0;}
-}
+.firework{position:fixed;width:6px;height:6px;border-radius:50%;animation:explode 1s ease-out forwards;}
+@keyframes explode{from{transform:scale(1);opacity:1;}to{transform:scale(6);opacity:0;}}
 
 @media(max-width:600px){
 h1{font-size:2rem;}
@@ -146,7 +107,7 @@ const content=document.getElementById("content");
 
 let score=0;
 
-/* ===== NO DODGE ===== */
+/* NO dodge */
 function dodge(){
 const maxX=box.clientWidth-noBtn.clientWidth;
 const maxY=box.clientHeight-noBtn.clientHeight;
@@ -164,7 +125,7 @@ if(d<80) dodge();
 });
 document.addEventListener("touchmove",dodge);
 
-/* ===== EFFECTS ===== */
+/* Celebration */
 function confetti(){
 const colors=["#ff0","#0f0","#0ff","#f0f","#fff","#f00","#ff69b4"];
 for(let i=0;i<120;i++){
@@ -177,7 +138,6 @@ document.body.appendChild(c);
 setTimeout(()=>c.remove(),6000);
 }
 }
-
 function hearts(){
 for(let i=0;i<30;i++){
 let h=document.createElement("div");
@@ -189,7 +149,6 @@ document.body.appendChild(h);
 setTimeout(()=>h.remove(),10000);
 }
 }
-
 function balloons(){
 for(let i=0;i<18;i++){
 let b=document.createElement("div");
@@ -201,7 +160,6 @@ document.body.appendChild(b);
 setTimeout(()=>b.remove(),10000);
 }
 }
-
 function fireworks(){
 for(let i=0;i<20;i++){
 let f=document.createElement("div");
@@ -214,12 +172,9 @@ setTimeout(()=>f.remove(),1000);
 }
 }
 
-/* ===== FIRST YES (celebration restored) ===== */
+/* First YES */
 yesBtn.onclick=()=>{
-confetti();
-hearts();
-balloons();
-fireworks();
+confetti(); hearts(); balloons(); fireworks();
 
 body.style.background="url('https://media.giphy.com/media/l0MYC0LajbaPoEADu/giphy.gif') center/cover no-repeat";
 
@@ -228,7 +183,6 @@ content.innerHTML=`
 I know you’re my Valentine dee vennamavalee 💕🥰<br><br>
 Una test pannalama? 😘❤️
 </div>
-
 <div class="actionBtns">
 <button class="yesSmall" onclick="showQ1()">YES ❤️</button>
 <button class="noSmall" onclick="secondNo()">NO 💔</button>
@@ -236,41 +190,34 @@ Una test pannalama? 😘❤️
 `;
 };
 
-/* ===== ANGRY PAGE ===== */
+/* Angry page */
 function secondNo(){
 body.style.background="url('https://media.giphy.com/media/11tTNkNy1SdXGg/giphy.gif') center/cover no-repeat";
-
-content.innerHTML=`
-<div class="message">Mooditu YES amuku dee 😤❤️</div>
-<button class="yesSmall" onclick="backToTest()">⬅ Back</button>
-`;
+content.innerHTML=`<div class="message">Mooditu YES amuku dee 😤❤️</div>
+<button class="yesSmall" onclick="backToTest()">⬅ Back</button>`;
 }
 
 function backToTest(){
 body.style.background="url('https://media.giphy.com/media/l0MYC0LajbaPoEADu/giphy.gif') center/cover no-repeat";
-
 content.innerHTML=`
 <div class="message">
 I know you’re my Valentine dee vennamavalee 💕🥰<br><br>
 Una test pannalama? 😘❤️
 </div>
-
 <div class="actionBtns">
 <button class="yesSmall" onclick="showQ1()">YES ❤️</button>
 <button class="noSmall" onclick="secondNo()">NO 💔</button>
-</div>
-`;
+</div>`;
 }
 
-/* ===== QUESTION 1 ===== */
+/* Q1 */
 function showQ1(){
 body.style.background="linear-gradient(135deg,#ff758c,#ff7eb3)";
 content.innerHTML=`
 <div class="message">Question 1 ❤️<br>Who I like the most?</div>
 <button class="optionBtn" onclick="q1Correct()">A) Priya</button>
 <button class="optionBtn" onclick="q1Wrong()">B) Chicky</button>
-<div class="score">Score: ${score}</div>
-`;
+<div class="score">Score: ${score}</div>`;
 }
 
 function q1Correct(){
@@ -279,8 +226,7 @@ body.style.background="url('https://media.giphy.com/media/111ebonMs90YLu/giphy.g
 content.innerHTML=`
 <div class="message">Great 😍🎉</div>
 <div class="score">Score: ${score}</div>
-<button class="yesSmall" onclick="showQ2()">Next ➡</button>
-`;
+<button class="yesSmall" onclick="showQ2()">Next ➡</button>`;
 }
 
 function q1Wrong(){
@@ -289,23 +235,23 @@ content.innerHTML=`<div class="message">Wrong 😡 Try again!</div>`;
 setTimeout(showQ1,2000);
 }
 
-/* ===== QUESTION 2 ===== */
+/* Q2 with DIFFERENT wrong GIFs */
+
 function showQ2(){
 body.style.background="linear-gradient(135deg,#ff758c,#ff7eb3)";
 content.innerHTML=`
 <div class="message">Question 2 ❤️<br>1st pic together??</div>
 
-<button class="optionBtn" onclick="q2Wrong()">A) 9th June 2024</button>
-<button class="optionBtn" onclick="q2Wrong()">B) 9th June 2023</button>
+<button class="optionBtn" onclick="q2Wrong1()">A) 9th June 2024</button>
+<button class="optionBtn" onclick="q2Wrong2()">B) 9th June 2023</button>
 <button class="optionBtn" onclick="q2Correct()">C) 9th Sep 2023</button>
-<button class="optionBtn" onclick="q2Wrong()">D) 9th Dec 2023</button>
+<button class="optionBtn" onclick="q2Wrong3()">D) 9th Dec 2023</button>
 
 <div class="score">Score: ${score}</div>
 
 <div class="navBtns">
 <button class="noSmall" onclick="showQ1()">⬅ Previous</button>
-</div>
-`;
+</div>`;
 }
 
 function q2Correct(){
@@ -314,12 +260,25 @@ body.style.background="url('https://media.giphy.com/media/l4FGuhL4U2WyjdkaY/giph
 content.innerHTML=`
 <div class="message">Awesome 😍🔥</div>
 <div class="score">Score: ${score}</div>
-<button class="yesSmall">Next ➡</button>
-`;
+<button class="yesSmall">Next ➡</button>`;
 }
 
-function q2Wrong(){
-body.style.background="url('https://media.giphy.com/media/l3q2K5jinAlChoCLS/giphy.gif') center/cover no-repeat";
+/* Three different wrong GIFs */
+
+function q2Wrong1(){
+body.style.background="url('https://media.giphy.com/media/3o7aD2saalBwwftBIY/giphy.gif') center/cover no-repeat";
+content.innerHTML=`<div class="message">Nope 😡 Try again!</div>`;
+setTimeout(showQ2,2000);
+}
+
+function q2Wrong2(){
+body.style.background="url('https://media.giphy.com/media/l1J9u3TZfpmeDLkD6/giphy.gif') center/cover no-repeat";
+content.innerHTML=`<div class="message">Wrong 😤 Try again!</div>`;
+setTimeout(showQ2,2000);
+}
+
+function q2Wrong3(){
+body.style.background="url('https://media.giphy.com/media/26ufdipQqU2lhNA4g/giphy.gif') center/cover no-repeat";
 content.innerHTML=`<div class="message">Oops 😡 Try again!</div>`;
 setTimeout(showQ2,2000);
 }
