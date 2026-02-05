@@ -54,7 +54,7 @@ button{
     position:absolute;
     left:120px;
     top:90px;
-    transition: left 0.25s ease, top 0.25s ease;
+    transition: left 0.2s ease, top 0.2s ease;
 }
 
 /* 🎊 CONFETTI */
@@ -75,8 +75,7 @@ button{
     position:fixed;
     width:35px;
     height:45px;
-    background:red;
-    border-radius:50% 50% 50% 50%;
+    border-radius:50%;
     animation:balloonUp linear forwards;
 }
 
@@ -134,8 +133,8 @@ const noBtn = document.getElementById("noBtn");
 const box = document.querySelector(".buttons");
 const yesBtn = document.getElementById("yesBtn");
 
-// Smooth NO movement
-function moveButton(){
+// Smart dodge logic
+function dodge(){
     const maxX = box.clientWidth - noBtn.clientWidth;
     const maxY = box.clientHeight - noBtn.clientHeight;
 
@@ -143,8 +142,21 @@ function moveButton(){
     noBtn.style.top = Math.random()*maxY + "px";
 }
 
-noBtn.addEventListener("mouseover", moveButton);
-noBtn.addEventListener("touchstart", moveButton);
+// Move when mouse gets near
+document.addEventListener("mousemove",(e)=>{
+    const rect = noBtn.getBoundingClientRect();
+    const distance = Math.hypot(
+        e.clientX - (rect.left + rect.width/2),
+        e.clientY - (rect.top + rect.height/2)
+    );
+
+    if(distance < 80){ // closeness sensitivity
+        dodge();
+    }
+});
+
+// Mobile touch dodge
+document.addEventListener("touchmove",dodge);
 
 // 🎊 Confetti
 function confettiRain(){
